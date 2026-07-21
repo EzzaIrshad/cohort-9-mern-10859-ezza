@@ -7,9 +7,8 @@ build/
 .next/
 
 # Environment files
-.env
-.env.local
-.env.*.local
+.env*
+!.env.example
 
 # IDE / OS files
 .vscode/

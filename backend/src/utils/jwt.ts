@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { env } from '../config/env.js'
 import logger from '../config/logger.js';
+import type { StringValue } from "ms";
 
 export interface JwtPayload {
     userId: string;
@@ -15,7 +16,7 @@ export const generateToken = ({ userId, email }: JwtPayload) => {
             email
         },
         env.JWT_ACCESS_SECRET,
-        { expiresIn: env.JWT_ACCESS_EXPIRES_IN }
+        { expiresIn: env.JWT_ACCESS_EXPIRES_IN  as StringValue }
     )
 }
 

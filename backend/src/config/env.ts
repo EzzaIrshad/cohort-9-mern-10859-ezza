@@ -1,11 +1,13 @@
-import dotenv from 'dotenv'
-import type { StringValue } from "ms";
+import dotenv from "dotenv";
+import { z } from "zod";
 
 dotenv.config();
 
-export const env = {
-    PORT: process.env.PORT!,
-    MONGODB_URI: process.env.MONGODB_URI!,
-    JWT_ACCESS_SECRET: process.env.JWT_ACCESS_SECRET!,
-    JWT_ACCESS_EXPIRES_IN: process.env.JWT_ACCESS_EXPIRES_IN! as StringValue,
-}
+const envSchema = z.object({
+    PORT: z.string().default("5000"),
+    MONGODB_URI: z.string().min(1, "MONGODB_URI is required"),
+    JWT_ACCESS_SECRET: z.string().min(1, "JWT_ACCESS_SECRET is required"),
+    JWT_ACCESS_EXPIRES_IN: z.string().min(1, "JWT_ACCESS_EXPIRES_IN is required"),
+});
+
+export const env = envSchema.parse(process.env);

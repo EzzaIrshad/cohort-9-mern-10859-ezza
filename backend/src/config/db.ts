@@ -7,7 +7,8 @@ const connectDb = async () => {
     try {
         if (!uri) {
             logger.error('MONGODB_URI is not defined');
-            process.exit(1);
+            process.exitCode = 1;
+            return;
         }
 
         // Connect specifically to target database
@@ -24,7 +25,8 @@ const connectDb = async () => {
         }
 
         // --- kill the process since the app can't function without DB access ---
-        process.exit(1);
+        process.exitCode = 1;
+        return;
     }
 }
 

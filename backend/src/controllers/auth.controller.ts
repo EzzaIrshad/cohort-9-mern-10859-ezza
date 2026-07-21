@@ -4,6 +4,7 @@ import { LoginInput, loginSchema, RegisterInput, registerSchema } from '../valid
 import { hashPassword, matchPassword } from '../utils/hash.js';
 import { generateToken } from '../utils/jwt.js';
 import logger from '../config/logger.js';
+import z, { ZodError } from 'zod';
 
 // --- Register User Controller ---
 export const registerUser = async (req: Request, res: Response) => {
@@ -43,13 +44,16 @@ export const registerUser = async (req: Request, res: Response) => {
         });
 
     } catch (error) {
-        if (error instanceof Error) {
-            logger.error(`Internal System Fault in registerUser: ${error.message}`);
-            return res.status(400).json({ message: error.message });
-        } else {
-            logger.error(`Unexpected error in registerUser: ${JSON.stringify(error)}`);
-            return res.status(500).json({ message: "Internal server error" });
+        if (error instanceof ZodError) {
+            return res.status(400).json({
+                message: "Validation failed",
+                errors: z.treeifyError(error),
+            });
         }
+
+        logger.error(error);
+
+        return res.status(500).json({ message: "Internal server error" });
     }
 }
 
@@ -62,22 +66,22 @@ export const loginUser = async (req: Request, res: Response) => {
         const user = await User.findOne({ email: data.email });
 
         if (!user) {
-            logger.warn(`Failed login attempt for email: ${data.email}`);
-            return res.status(400).json({ message: "User not found!" });
+            logger.warn("Login failed: invalid credentials");
+            return res.status(401).json({ message: "Invalid email or password." });
         }
 
         // Verify provided password against hashed database password
         const isMatch = await matchPassword(data.password, user.password);
 
         if (!isMatch) {
-            logger.warn(`Failed login attempt for email: ${data.email}`);
+            logger.warn("Login failed: invalid credentials");
             return res.status(401).json({ message: "Invalid email or password." });
         }
 
         // Issue session token on successful verification
         const token = generateToken({ userId: user._id.toString(), email: user.email });
 
-        logger.info(`User Authenticated Successfully: [${user.email}]`);
+        logger.info({ userId: user._id }, "User authenticated successfully");
 
         return res.json({
             success: true,
@@ -93,13 +97,16 @@ export const loginUser = async (req: Request, res: Response) => {
         })
 
     } catch (error) {
-        if (error instanceof Error) {
-            logger.error(`Internal System Fault in loginUser: ${error.message}`);
-            return res.status(500).json({ message: error.message });
-        } else {
-            logger.error(`Unexpected error in loginUser: ${JSON.stringify(error)}`);
-            return res.status(500).json({ message: "Internal server error" });
+        if (error instanceof ZodError) {
+            return res.status(400).json({
+                message: "Validation failed",
+                errors: z.treeifyError(error),
+            });
         }
+
+        logger.error(error);
+
+        return res.status(500).json({ message: "Internal server error" });
     }
 }
 
