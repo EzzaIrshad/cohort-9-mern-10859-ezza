@@ -24,7 +24,6 @@ const noteSchema = new Schema<INote>({
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true,
-        index: true
     },
     isPinned: {
         type: Boolean,
@@ -38,6 +37,8 @@ const noteSchema = new Schema<INote>({
     timestamps: true
 })
 
-noteSchema.index({ user: 1, updatedAt: -1 });
+noteSchema.index({ userId: 1, isPinned: -1, updatedAt: -1 });
+
+noteSchema.index({ userId: 1, isPinned: -1, createdAt: -1 });
 
 export default model<INote>("Note", noteSchema)
