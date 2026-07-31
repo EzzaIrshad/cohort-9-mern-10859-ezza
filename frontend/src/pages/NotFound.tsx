@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
+import type { ReactElement } from "react";
 
-const NotFound = () => {
+const NotFound = (): ReactElement => {
     return (
         <div className="flex min-h-screen items-center justify-center bg-background px-4">
             <div className="max-w-md text-center">
