@@ -144,7 +144,7 @@ export const getCurrentUser = async (req: Request, res: Response) => {
 /**
  * Logs out the current user by clearing the authentication cookie.
 */
-export const logoutUser = (res: Response) => {
+export const logoutUser = (_req: Request, res: Response) => {
     clearAuthCookie(res);
 
     logger.info("User logged out successfully");

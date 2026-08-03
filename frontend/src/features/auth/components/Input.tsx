@@ -15,8 +15,8 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
  */
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-    ({ id, icon, iconBg, error, trailing, className, ...props }, ref) => {
-        const errorId = error ? `${id}-error` : undefined;
+    ({ icon, iconBg, error, trailing, className, ...props }, ref) => {
+        const errorId = error ? `${props.id}-error` : undefined;
         return (
             <div>
                 <div
