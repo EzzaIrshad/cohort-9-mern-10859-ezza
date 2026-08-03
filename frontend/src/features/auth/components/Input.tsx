@@ -3,15 +3,20 @@ import type { InputHTMLAttributes, ReactNode } from "react";
 import { MdError } from "react-icons/md";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+    id: string;
     icon: ReactNode;
     iconBg: string;
     error?: string;
     trailing?: ReactNode;
 }
 
+/**
+ * Renders the custom text input component with error messaging.
+ */
+
 const Input = forwardRef<HTMLInputElement, InputProps>(
-    ({ icon, iconBg, error, trailing, className, ...props }, ref) => {
-        const errorId = error ? `${props.id}-error` : undefined; 
+    ({ id, icon, iconBg, error, trailing, className, ...props }, ref) => {
+        const errorId = error ? `${id}-error` : undefined;
         return (
             <div>
                 <div
@@ -34,7 +39,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 </div>
                 {error && (
                     <div className="flex items-center gap-2 mt-1.5 text-destructive">
-                        <MdError size={16}/>
+                        <MdError size={16} />
                         <p id={errorId} className="text-xs">
                             {error}
                         </p>
