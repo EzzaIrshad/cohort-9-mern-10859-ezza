@@ -1,7 +1,52 @@
 # React + TypeScript + Vite
 
-## Environment variables
+## Overview
 
-The frontend expects a Vite environment variable named `VITE_API_URL` for the Axios API base URL. It is recommended for API calls to a backend running on a different host or port, and should be set to a value such as `http://localhost:5000/api`.
+This frontend is a React + TypeScript app built with Vite. It expects an API backend and uses an Axios instance that reads the API base URL from a Vite environment variable.
 
-If `VITE_API_URL` is not set, Axios will use a relative base URL, so requests will target the current origin instead of a separate API server.
+## Prerequisites
+
+- Node.js (recommended >= 18)
+- npm or yarn
+
+## Setup
+
+1. Install dependencies:
+
+```bash
+npm install
+# or
+# yarn
+```
+
+2. Create a `.env` file at the project root (optional) to define the API base URL and other Vite variables. Vite requires env variables that are exposed to the client to be prefixed with `VITE_`.
+
+Example `.env`:
+
+```
+VITE_API_URL=http://localhost:5000/api
+```
+
+If `VITE_API_URL` is not set, the Axios instance will use a relative base URL and requests will target the current origin.
+
+## Useful scripts
+
+- `npm run dev` — start the dev server (Vite)
+- `npm run build` — compile TypeScript and build the production bundle
+- `npm run preview` — preview the production build locally
+- `npm run lint` — run ESLint
+
+## API configuration
+
+The Axios instance is configured in `src/shared/api/axiosInstance.ts` and uses `import.meta.env.VITE_API_URL` as the `baseURL`.
+
+If your backend runs on a different host or port during development, set `VITE_API_URL` accordingly (for example `http://localhost:5000/api`).
+
+## Notes
+
+- Keep any secrets on the server side — Vite-exposed env vars are bundled into client code.
+- If you change environment variables, restart the dev server to pick up changes.
+
+## Further reading
+
+See the project root and `frontend/src` for app structure and feature code.
