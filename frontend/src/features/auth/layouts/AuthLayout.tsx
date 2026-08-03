@@ -6,7 +6,7 @@ import type { ReactElement } from "react";
 const AuthLayout = (): ReactElement => {
 
     return (
-        <div className="relative max-h-screen overflow-hidden bg-background">
+        <div className="relative min-h-screen bg-background 2xl:overflow-hidden">
             {/* Background glowing blobs */}
             <div
                 className="pointer-events-none absolute -top-40 -left-40 h-125 w-125 animate-blob rounded-full opacity-70"

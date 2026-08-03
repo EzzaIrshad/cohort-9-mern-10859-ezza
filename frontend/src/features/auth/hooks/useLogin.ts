@@ -11,13 +11,9 @@ interface ErrorResponse {
 export const useLogin = () => {
     return useMutation({
         mutationFn: login,
-        onSuccess: (response) => {
-            // Persist the JWT token to local storage for persistent sessions
-            localStorage.setItem("token", response.data?.token || "");
-        },
         onError: (error: AxiosError<ErrorResponse>) => {
             // Display backend error message or fallback to a generic message
-            toast.error(error.response?.data.message ?? "Something went wrong.");
+            toast.error(error.response?.data?.message ?? "Something went wrong.");
         }
     });
 };

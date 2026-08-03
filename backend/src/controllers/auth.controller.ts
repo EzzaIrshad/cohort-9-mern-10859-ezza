@@ -5,6 +5,7 @@ import { hashPassword, matchPassword } from '../utils/hash.js';
 import { generateToken } from '../utils/jwt.js';
 import logger from '../config/logger.js';
 import z, { ZodError } from 'zod';
+import { clearAuthCookie, setAuthCookie } from '../utils/cookies.js';
 
 // --- Register User Controller ---
 export const registerUser = async (req: Request, res: Response) => {
@@ -30,11 +31,13 @@ export const registerUser = async (req: Request, res: Response) => {
         // Generate JWT token
         const token = generateToken({ userId: newUser._id.toString(), email: newUser.email });
 
+        // Set HttpOnly Cookie
+        setAuthCookie(res, token);
+
         return res.status(201).json({
             success: true,
             message: "Registered successfully.",
             data: {
-                token,
                 user: {
                     id: newUser._id,
                     fullName: newUser.fullName,
@@ -83,11 +86,13 @@ export const loginUser = async (req: Request, res: Response) => {
 
         logger.info({ userId: user._id }, "User authenticated successfully");
 
+        // Set HttpOnly Cookie
+        setAuthCookie(res, token);
+
         return res.json({
             success: true,
             message: "Logged in successfully.",
             data: {
-                token,
                 user: {
                     id: user._id.toString(),
                     fullName: user.fullName,
@@ -115,3 +120,13 @@ export const getCurrentUser = async (req: Request, res: Response) => {
     // Return payload attached by authentication middleware
     res.status(200).json(req.user);
 }
+
+// --- User logout Controller ---
+export const logoutUser = async (req: Request, res: Response) => {
+    clearAuthCookie(res);
+
+    return res.status(200).json({
+        success: true,
+        message: "Logged out successfully."
+    });
+};

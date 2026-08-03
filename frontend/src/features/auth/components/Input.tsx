@@ -11,10 +11,11 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
     ({ icon, iconBg, error, trailing, className, ...props }, ref) => {
+        const errorId = error ? `${props.id}-error` : undefined; 
         return (
             <div>
                 <div
-                    className="group relative flex items-center gap-3 rounded-xl bg-secondary px-3 py-3 transition input-shadow">
+                    className="group relative flex items-center gap-3 rounded-xl bg-secondary px-3 py-3 transition input-shadow focus-within:shadow-[inset_6px_2px_5px_0_rgba(0,0,0,0.2),inset_-4px_-6px_6px_0_rgba(255,255,255,0.7),2px_2px_4px_0_rgba(0,0,0,0.1)]">
                     <span
                         className="absolute -left-2 -top-1 grid size-11 2xl:size-12 place-items-center rounded-full icon-container-shadow"
                         style={{ background: iconBg }}
@@ -25,14 +26,16 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                     <input
                         ref={ref}
                         {...props}
-                        className={`ml-9 min-w-0 flex-1 bg-transparent text-xs 2xl:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none ${className ?? ""}`}
+                        aria-invalid={!!error}
+                        aria-describedby={errorId}
+                        className={`ml-9 min-w-0 flex-1 bg-transparent text-xs 2xl:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none  ${className ?? ""}`}
                     />
                     {trailing}
                 </div>
                 {error && (
                     <div className="flex items-center gap-2 mt-1.5 text-destructive">
                         <MdError size={16}/>
-                        <p className="text-xs">
+                        <p id={errorId} className="text-xs">
                             {error}
                         </p>
                     </div>

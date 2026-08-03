@@ -30,6 +30,7 @@ const AuthHero = () => {
                     <div className="relative -mt-4 w-full">
                         <img
                             src={heroImage}
+                            alt="Notik hero illustration"
                             className="size-110 2xl:size-128 xl:ml-20 animate-fade-in-up"
                         />
                     </div>
