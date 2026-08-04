@@ -5,8 +5,16 @@ import { hashPassword, matchPassword } from '../utils/hash.js';
 import { generateToken } from '../utils/jwt.js';
 import logger from '../config/logger.js';
 import z, { ZodError } from 'zod';
+import { clearAuthCookie, setAuthCookie } from '../utils/cookies.js';
 
-// --- Register User Controller ---
+/**
+ * Registers a new user in the system.
+ * 
+ * Validates request payload using Zod schema, checks for existing user emails,
+ * hashes the password, saves the user document, and sets an authentication cookie.
+ *
+ */
+
 export const registerUser = async (req: Request, res: Response) => {
     try {
         // Validate request payload against Zod schema
@@ -30,11 +38,13 @@ export const registerUser = async (req: Request, res: Response) => {
         // Generate JWT token
         const token = generateToken({ userId: newUser._id.toString(), email: newUser.email });
 
+        // Set HttpOnly Cookie
+        setAuthCookie(res, token);
+
         return res.status(201).json({
             success: true,
             message: "Registered successfully.",
             data: {
-                token,
                 user: {
                     id: newUser._id,
                     fullName: newUser.fullName,
@@ -57,7 +67,14 @@ export const registerUser = async (req: Request, res: Response) => {
     }
 }
 
-// --- Login User Controller ---
+/**
+ * Authenticates an existing user and issues an authentication cookie.
+ * 
+ * Validates login credentials against Zod schema, verifies user existence and password,
+ * and attaches a JWT in an HttpOnly cookie upon successful authentication.
+ *
+ */
+
 export const loginUser = async (req: Request, res: Response) => {
     try {
         const data: LoginInput = loginSchema.parse(req.body);
@@ -83,11 +100,13 @@ export const loginUser = async (req: Request, res: Response) => {
 
         logger.info({ userId: user._id }, "User authenticated successfully");
 
+        // Set HttpOnly Cookie
+        setAuthCookie(res, token);
+
         return res.json({
             success: true,
             message: "Logged in successfully.",
             data: {
-                token,
                 user: {
                     id: user._id.toString(),
                     fullName: user.fullName,
@@ -110,8 +129,28 @@ export const loginUser = async (req: Request, res: Response) => {
     }
 }
 
-// --- Get Current Profile Controller ---
+/**
+ * Retrieves the currently authenticated user's profile information.
+ * 
+ * Relies on authentication middleware to attach the decoded user payload to `req.user`.
+ *
+ */
+
 export const getCurrentUser = async (req: Request, res: Response) => {
     // Return payload attached by authentication middleware
     res.status(200).json(req.user);
 }
+
+/**
+ * Logs out the current user by clearing the authentication cookie.
+*/
+export const logoutUser = (_req: Request, res: Response) => {
+    clearAuthCookie(res);
+
+    logger.info("User logged out successfully");
+
+    return res.status(200).json({
+        success: true,
+        message: "Logged out successfully."
+    });
+};

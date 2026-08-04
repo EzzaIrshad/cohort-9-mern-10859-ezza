@@ -1,16 +1,26 @@
-import express from 'express'
-import cors from 'cors'
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import { pinoHttp } from 'pino-http';
+import helmet from "helmet";
+import cors from 'cors';
+
 import logger from './config/logger.js';
 import userRoute from './routes/auth.route.js'
 import noteRoute from './routes/notes.route.js'
-import { pinoHttp } from 'pino-http';
-import helmet from "helmet";
+import { env } from './config/env.js';
 
 const app = express();
 
 app.use(helmet());
-app.use(cors());
+
+app.use(cors({
+    origin: env.CLIENT_ORIGIN,
+    credentials: true
+}));
+
 app.use(express.json());
+
+app.use(cookieParser());
 
 app.use(pinoHttp({ logger }));
 
