@@ -1,11 +1,8 @@
+import type { ErrorResponse } from "../types/auth.types";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "../api/auth.api";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
-
-interface ErrorResponse {
-    message: string;
-}
 
 // Custom hook to manage user authentication state during login
 export const useLogin = () => {

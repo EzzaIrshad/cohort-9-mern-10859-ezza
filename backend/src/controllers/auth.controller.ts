@@ -137,8 +137,15 @@ export const loginUser = async (req: Request, res: Response) => {
  */
 
 export const getCurrentUser = async (req: Request, res: Response) => {
-    // Return payload attached by authentication middleware
-    res.status(200).json(req.user);
+    const user = await User.findById(req.user?.userId).select(
+        "fullName email"
+    );
+
+    return res.status(200).json({
+        success: true,
+        message: "User retrieved successfully.",
+        data: user,
+    });
 }
 
 /**

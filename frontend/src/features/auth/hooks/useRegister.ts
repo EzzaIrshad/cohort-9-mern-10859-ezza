@@ -1,11 +1,8 @@
+import type { ErrorResponse } from "../types/auth.types";
 import { useMutation } from "@tanstack/react-query";
 import { register } from "../api/auth.api";
 import type { AxiosError } from "axios";
 import { toast } from "sonner";
-
-interface ErrorResponse {
-    message: string;
-}
 
 // Custom hook to manage user authentication state during registration
 export const useRegister = () => {

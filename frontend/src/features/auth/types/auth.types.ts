@@ -1,5 +1,7 @@
+import type { ApiResponse } from "../../../shared/types/api.types";
+
 export interface User {
-    id: string;
+    _id: string;
     fullName: string;
     email: string;
 }
@@ -7,12 +9,6 @@ export interface User {
 export interface AuthData {
     token: string;
     user: User;
-}
-
-export interface ApiResponse<T> {
-    success: boolean;
-    message: string;
-    data?: T;
 }
 
 export interface RegisterRequest {
@@ -26,6 +22,12 @@ export interface LoginRequest {
     password: string;
 }
 
+export interface ErrorResponse {
+    message: string;
+}
+
 export type RegisterResponse = ApiResponse<AuthData>;
 
 export type LoginResponse = ApiResponse<AuthData>;
+
+export type UserResponse = ApiResponse<User>;
