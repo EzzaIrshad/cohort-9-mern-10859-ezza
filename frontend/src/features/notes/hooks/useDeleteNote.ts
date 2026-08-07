@@ -3,17 +3,20 @@ import { deleteNote } from "../api/notes.api"
 
 
 /**
- * Delete a note by its Id and invalidate the notes cache
- * @returns 
+ * Delete a note by its Id and invalidate the notes cache and that individual note.
  */
 export const useDeleteNote = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: (id: string) => deleteNote(id),
-        onSuccess: () => {
+        onSuccess: (_data, id) => {
             queryClient.invalidateQueries({
                 queryKey: ["notes"],
+            });
+
+            queryClient.removeQueries({
+                queryKey: ["note", id],
             });
         },
     });

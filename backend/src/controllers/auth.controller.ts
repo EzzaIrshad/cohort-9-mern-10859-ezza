@@ -137,16 +137,26 @@ export const loginUser = async (req: Request, res: Response) => {
  */
 
 export const getCurrentUser = async (req: Request, res: Response) => {
-    const user = await User.findById(req.user?.userId).select(
-        "fullName email"
-    );
+    try {
+        const user = await User.findById(req.user?.userId).select(
+            "fullName email"
+        );
 
-    return res.status(200).json({
-        success: true,
-        message: "User retrieved successfully.",
-        data: user,
-    });
-}
+        if (!user) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "User retrieved successfully.",
+            data: user,
+        });
+    } catch (error) {
+        logger.error({ err: error }, "Failed to retrieve current user.");
+
+        return res.status(500).json({ message: "Internal server error." });
+    }
+};
 
 /**
  * Logs out the current user by clearing the authentication cookie.
