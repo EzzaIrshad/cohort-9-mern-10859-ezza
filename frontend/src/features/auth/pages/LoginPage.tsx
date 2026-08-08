@@ -35,7 +35,7 @@ const LoginPage: React.FC = () => {
         loginMutation.mutate(data, {
             onSuccess: () => {
                 reset(); // clear input fields
-                navigate("/");
+                navigate("/dashboard");
             },
         });
     }
@@ -43,7 +43,7 @@ const LoginPage: React.FC = () => {
     return (
         <div className="w-full max-w-100 2xl:max-w-115 min-h-2/3 flex">
             {/* Card wrapper */}
-            <div className="w-full sm:w-5/6 rounded-lg border border-border/60 bg-background p-7 2xl:p-12 self-center shadow-card">
+            <div className="w-full sm:w-5/6 rounded-lg border border-border/60 bg-background dark:bg-secondary p-7 2xl:p-12 self-center shadow-card">
                 {/* Header title section */}
                 <div className="mb-10 text-center">
                     <h2 className="mt-4 font-nunito text-3xl 2xl:text-4xl font-extrabold tracking-tight text-secondary-foreground">

@@ -20,7 +20,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         return (
             <div>
                 <div
-                    className="group relative flex items-center gap-3 rounded-xl bg-background px-3 py-3 transition input-shadow focus-within:shadow-[inset_6px_2px_5px_0_rgba(0,0,0,0.2),inset_-4px_-6px_6px_0_rgba(255,255,255,0.7),2px_2px_4px_0_rgba(0,0,0,0.1)]">
+                    className="group relative flex items-center gap-3 rounded-xl bg-background dark:bg-muted px-3 py-3 transition input-shadow focus-within:shadow-focus">
                     <span
                         className="absolute -left-2 -top-1 grid size-11 2xl:size-12 place-items-center rounded-full icon-container-shadow"
                         style={{ background: iconBg }}
