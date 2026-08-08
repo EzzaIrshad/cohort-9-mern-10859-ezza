@@ -1,6 +1,6 @@
+import { useTheme } from "@/app/providers/ThemeProvider";
 import { IoSunny as Sun } from "react-icons/io5";
 import { LuMoon as Moon } from "react-icons/lu";
-import { useTheme } from "../../app/providers/ThemeProvider";
 
 const ThemeToggle = () => {
     const { theme, setTheme } = useTheme();

@@ -1,8 +1,8 @@
 
-import { useState } from "react";
-import { IoMdMail } from "react-icons/io";
-import { BiSolidLock } from "react-icons/bi";
 import { FiEye, FiEyeOff, FiArrowRight } from "react-icons/fi";
+import { BiSolidLock } from "react-icons/bi";
+import { IoMdMail } from "react-icons/io";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 import { useForm } from "react-hook-form";
@@ -43,7 +43,7 @@ const LoginPage: React.FC = () => {
     return (
         <div className="w-full max-w-100 2xl:max-w-115 min-h-2/3 flex">
             {/* Card wrapper */}
-            <div className="w-full sm:w-5/6 rounded-lg border border-border/60 bg-secondary p-7 2xl:p-12 self-center shadow-card">
+            <div className="w-full sm:w-5/6 rounded-lg border border-border/60 bg-background p-7 2xl:p-12 self-center shadow-card">
                 {/* Header title section */}
                 <div className="mb-10 text-center">
                     <h2 className="mt-4 font-nunito text-3xl 2xl:text-4xl font-extrabold tracking-tight text-secondary-foreground">
@@ -85,7 +85,7 @@ const LoginPage: React.FC = () => {
                                 type="button"
                                 onClick={() => setShowPassword((s) => !s)}
                                 aria-label={showPassword ? "Hide password" : "Show password"}
-                                className="mr-2 rounded-full text-muted-foreground transition hover:bg-secondary hover:text-foreground"
+                                className="mr-2 rounded-full text-muted-foreground transition hover:bg-background hover:text-foreground"
                             >
                                 {showPassword ? <FiEyeOff className="h-4 w-4" /> : <FiEye className="h-4 w-4" />}
                             </button>

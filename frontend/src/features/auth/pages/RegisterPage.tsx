@@ -46,7 +46,7 @@ const RegisterPage: React.FC = () => {
     return (
         <div className="w-full max-w-100 2xl:max-w-115 min-h-2/3 flex">
             {/* Card wrapper */}
-            <div className="max-sm:w-full rounded-lg border border-border/60 bg-secondary p-7 pb-5 2xl:p-12 self-center shadow-card">
+            <div className="max-sm:w-full rounded-lg border border-border/60 bg-background p-7 pb-5 2xl:p-12 self-center shadow-card">
                 {/* Header title section */}
                 <div className="mb-7 md:mx-4">
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary-foreground/15 px-3 py-1 text-xs font-semibold text-secondary-foreground">
@@ -104,7 +104,7 @@ const RegisterPage: React.FC = () => {
                                 type="button"
                                 onClick={() => setShowPassword((s) => !s)}
                                 aria-label={showPassword ? "Hide password" : "Show password"}
-                                className="mr-2 rounded-full text-muted-foreground transition hover:bg-secondary hover:text-foreground"
+                                className="mr-2 rounded-full text-muted-foreground transition hover:bg-background hover:text-foreground"
                             >
                                 {showPassword ? <FiEyeOff className="h-4 w-4" /> : <FiEye className="h-4 w-4" />}
                             </button>
