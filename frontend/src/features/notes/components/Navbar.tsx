@@ -1,10 +1,10 @@
 import NotikLogo from "@/shared/components/NotikLogo"
 import { Link } from "react-router-dom"
 import { FiSearch as Search } from "react-icons/fi";
-import { useState } from "react";
+import { useState, type ReactElement } from "react";
 import ThemeToggle from "@/shared/components/ThemeToggle";
 
-const Navbar = () => {
+const Navbar = (): ReactElement => {
     const [query, setQuery] = useState("");
     return (
         <nav className="sticky top-0 z-40 border-b border-border/50 bg-background shadow">
@@ -22,6 +22,7 @@ const Navbar = () => {
                     <input
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
+                        aria-label="Search your notes"
                         placeholder="Search your notes..."
                         className="min-w-0 flex-1 bg-transparent text-xs 2xl:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
                     />

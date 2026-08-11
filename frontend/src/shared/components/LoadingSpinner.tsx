@@ -1,5 +1,6 @@
+import type { ReactElement } from "react"
 
-const LoadingSpinner = () => {
+const LoadingSpinner = (): ReactElement => {
     return (
         <div role="status" className="h-screen w-full flex items-center justify-center">
             <svg aria-hidden="true" className="size-10 text-lavender/60 animate-spin fill-primary" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
