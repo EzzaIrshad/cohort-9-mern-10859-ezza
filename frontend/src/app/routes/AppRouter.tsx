@@ -1,9 +1,11 @@
 import { Route, Routes } from 'react-router-dom'
-import NotFound from '../../pages/NotFound'
 import type { ReactElement } from "react";
-import AuthLayout from '../../features/auth/layouts/AuthLayout';
-import LoginPage from '../../features/auth/pages/LoginPage';
-import SignUpPage from '../../features/auth/pages/RegisterPage';
+import NotFound from '@/pages/NotFound'
+import AuthLayout from '@/features/auth/layouts/AuthLayout';
+import LoginPage from '@/features/auth/pages/LoginPage';
+import SignUpPage from '@/features/auth/pages/RegisterPage';
+import ProtectedRoute from './ProtectedRoute';
+import DashboardLayout from '@/features/notes/layouts/DashboardLayout';
 
 export default function AppRouter(): ReactElement {
     return (
@@ -13,8 +15,13 @@ export default function AppRouter(): ReactElement {
                 <Route path="/register" element={<SignUpPage />} />
             </Route>
 
-            
-            <Route path="/" element={<h1>Home</h1>} />
+
+            <Route element={<ProtectedRoute />} >
+                <Route element={<DashboardLayout />}>
+                    <Route path="/dashboard" element={"dashboardPage"} />
+                </Route>
+            </Route>
+
             <Route path="*" element={<NotFound />} />
         </Routes>
     )
