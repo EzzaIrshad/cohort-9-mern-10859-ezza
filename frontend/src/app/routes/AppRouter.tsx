@@ -6,6 +6,7 @@ import LoginPage from '@/features/auth/pages/LoginPage';
 import SignUpPage from '@/features/auth/pages/RegisterPage';
 import ProtectedRoute from './ProtectedRoute';
 import DashboardLayout from '@/features/notes/layouts/DashboardLayout';
+import DashboardPage from '@/features/notes/pages/DashboardPage';
 
 export default function AppRouter(): ReactElement {
     return (
@@ -18,7 +19,7 @@ export default function AppRouter(): ReactElement {
 
             <Route element={<ProtectedRoute />} >
                 <Route element={<DashboardLayout />}>
-                    <Route path="/dashboard" element={"dashboardPage"} />
+                    <Route path="/dashboard" element={<DashboardPage />} />
                 </Route>
             </Route>
 
