@@ -1,5 +1,11 @@
-import { Pin, Pen, Trash } from "lucide-react";
+// import { Trash } from "lucide-react";
 import type { Note } from "../types/notes.types";
+import { BsPinAngle as Pin, BsPinAngleFill as FilledPin, BsTrash3Fill as Trash } from "react-icons/bs";
+import { MdModeEdit as Pen } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import { useUpdateNote } from "../hooks/useUpdateNote";
+import { useDeleteNote } from "../hooks/useDeleteNote";
+import { toast } from "sonner";
 
 interface ToneItem {
     bg: string;
@@ -17,38 +23,85 @@ export const NoteCard = ({
     tone,
     noteData
 }: NoteCardProps) => {
+
+    const navigate = useNavigate();
+    const updateMutation = useUpdateNote(noteData._id);
+    const deleteMutation = useDeleteNote();
+
+    const handlePin = () => {
+        updateMutation.mutate({
+            isPinned: !noteData.isPinned
+        })
+    }
+
+    const handleEdit = () => {
+        navigate(`/notes/${noteData._id}/edit`);
+    }
+
+    const handleDelete = () => {
+        deleteMutation.mutate(noteData._id);
+    }
     return (
         <div
             className="group relative flex flex-col justify-between rounded-sm p-3 shadow-card"
             style={{ backgroundColor: tone.bg }}
         >
             <div>
-                {/* Header Actions */}
+                {/* note actions */}
                 <div className="flex items-start justify-between">
-                    <span
-                        className="grid size-9 place-items-center rounded-[9px] bg-white"
+                    {/* pin */}
+                    <button
+                        onClick={handlePin}
+                        aria-label={noteData.isPinned ? "Unpin note" : "Pin note"}
+                        className="grid size-9 place-items-center rounded-[9px] bg-white dark:bg-white/90 cursor-pointer focus-within:shadow-focus"
                         style={{
-                            boxShadow:
-                                "-2px 2px 2px rgba(0, 0, 0, 0.3), rgba(9, 30, 66, 0.25) 0px 1px 2px, inset -2px 2px 3px 0px rgba(255, 255, 255, 0.5), inset 2px -2px 3px rgba(0, 0, 0, 0.2)",
+                            boxShadow: "-2px 2px 2px rgba(0, 0, 0, 0.3), rgba(9, 30, 66, 0.25) 0px 1px 2px, inset -2px 2px 3px 0px rgba(255, 255, 255, 0.5), inset 2px -2px 3px rgba(0, 0, 0, 0.2)",
                         }}
                     >
-                        <Pin
-                            className={`size-3.5 sm:size-4 rotate-45 icon-shadow ${tone.pinColor}`}
-                        />
-                    </span>
+                        {
+                            noteData.isPinned ?
+                                <FilledPin className={`size-3.5 sm:size-4 ${tone.pinColor}`} />
+                                :
+                                <Pin className={`size-3.5 sm:size-4 ${tone.pinColor}`} strokeWidth={0.5} />
+                        }
+                    </button>
+
                     <div className="flex items-start gap-2">
-                        <span
-                            className="grid size-9 place-items-center rounded-[9px]"
+                        {/* edit */}
+                        <button
+                            onClick={handleEdit}
+                            aria-label="Edit note"
+                            className="grid size-9 place-items-center rounded-[9px] cursor-pointer"
                             style={{ background: tone.chip }}
                         >
-                            <Pen className="size-3.5 sm:size-4 text-white fill-white icon-shadow" />
-                        </span>
-                        <span
-                            className="grid size-9 place-items-center rounded-[9px]"
+                            <Pen className="size-5 text-white fill-white" />
+                        </button>
+
+                        {/* delete */}
+                        <button
+                            onClick={() => {
+                                toast("Confirm deletion", {
+                                    description: "This note will be permanently deleted.",
+                                    position: "bottom-right",
+                                    action: {
+                                        label: "Delete",
+                                        onClick: () => {
+                                            handleDelete();
+                                            toast.success("Item deleted");
+                                        },
+                                    },
+                                    cancel: {
+                                        label: "Cancel",
+                                        onClick: () => { },
+                                    },
+                                })
+                            }}
+                            aria-label="Delete note"
+                            className="grid size-9 place-items-center rounded-[9px] cursor-pointer"
                             style={{ background: tone.chip }}
                         >
-                            <Trash className="size-3.5 sm:size-4 text-white fill-white icon-shadow" />
-                        </span>
+                            <Trash className="size-4 text-white fill-white icon-shadow" />
+                        </button>
                     </div>
                 </div>
 

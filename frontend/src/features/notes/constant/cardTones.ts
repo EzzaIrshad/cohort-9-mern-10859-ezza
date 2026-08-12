@@ -1,13 +1,13 @@
 export const cardTones = [
     {
         bg: "var(--note-lavender)",
-        pinColor: "text-primary",
+        pinColor: "text-[#714da7]",
         chip: "linear-gradient(135deg, var(--lavender), oklch(0.72 0.14 300))",
         pillBg: "bg-lavender",
     },
     {
         bg: "var(--note-pink)",
-        pinColor: "text-pink",
+        pinColor: "text-[oklch(0.72_0.14_350)]",
         chip: "linear-gradient(135deg, var(--pink), oklch(0.72 0.14 350))",
         pillBg: "bg-pink",
     },
@@ -19,19 +19,19 @@ export const cardTones = [
     },
     {
         bg: "var(--note-sky)",
-        pinColor: "text-sky",
+        pinColor: "text-[oklch(0.7_0.13_230)]",
         chip: "linear-gradient(135deg, var(--sky), oklch(0.7 0.13 230))",
         pillBg: "bg-sky",
     },
     {
         bg: "var(--note-mint)",
-        pinColor: "text-mint",
+        pinColor: "text-[#1e986f]",
         chip: "linear-gradient(135deg, var(--mint), #56c499)",
         pillBg: "bg-mint",
     },
     {
         bg: "var(--note-peach)",
-        pinColor: "text-peach",
+        pinColor: "text-[#d5986f]",
         chip: "linear-gradient(135deg, var(--peach), #eeaf85)",
         pillBg: "bg-peach",
     },

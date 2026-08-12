@@ -89,7 +89,9 @@ const AccountDropdown = () => {
                         <User aria-hidden="true" />
                         Profile
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="gap-3 hover:bg-primary/20! hover:rounded-[6px]">
+                    <DropdownMenuItem
+                        onClick={() => navigate("/dashboard", { state: { tab: "pinned" } })}
+                        className="gap-3 hover:bg-primary/20! hover:rounded-[6px]">
                         <PinIcon aria-hidden="true" />
                         Pinned Notes
                     </DropdownMenuItem>
@@ -97,12 +99,12 @@ const AccountDropdown = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                     onClick={handleLogout}
-                    disabled= {logoutMutation.isPending}
+                    disabled={logoutMutation.isPending}
                     variant="destructive"
                     className="gap-3 hover:rounded-[6px] cursor-pointer"
-                    >
+                >
                     <LogOutIcon aria-hidden="true" />
-                    {logoutMutation.isPending ? "Logging out..." : "Logout" }
+                    {logoutMutation.isPending ? "Logging out..." : "Logout"}
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

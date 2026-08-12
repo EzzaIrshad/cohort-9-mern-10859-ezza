@@ -1,7 +1,8 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/components/ui/tabs"
+import { CardSkeleton } from "@/shared/components/ui/skeleton"
 import { Pin, Plus, StickyNote } from "lucide-react"
 import { Link } from "react-router-dom"
-import { EmptyState } from "./EmptyState"
+import { EmptyPinnedState, EmptySearchState, EmptyState } from "./EmptyState"
 import { NoteCard } from "./NoteCard"
 import type { Note } from "../types/notes.types"
 import { cardTones } from "../constant/cardTones"
@@ -24,9 +25,11 @@ interface Props {
     isLoading: boolean;
     tab: string;
     setTab: (tab: string) => void;
+    search: string;
 }
 
-const NotesPanel = ({ notes, isLoading, tab, setTab }: Props) => {
+const NotesPanel = ({ notes, isLoading, tab, setTab, search }: Props) => {
+
     return (
         <div className="mx-auto flex w-full max-w-330 h-full gap-2 px-4 pb-3 sm:px-6 lg:px-8">
             <div className="py-4 md:py-6 w-full">
@@ -37,14 +40,14 @@ const NotesPanel = ({ notes, isLoading, tab, setTab }: Props) => {
                                 <TabsTrigger
                                     key={tab.value}
                                     value={tab.value}
-                                    className='gap-1 sm:gap-2 p-2.5 sm:px-3 rounded-full bg-lavender/60 dark:bg-lavender/80 data-active:bg-primary 
+                                    className='gap-1 max-sm:text-xs sm:gap-2 px-2 py-1.75 sm:p-2.5 sm:px-3 rounded-full bg-lavender/60 dark:bg-lavender/80 data-active:bg-primary 
                                         dark:data-active:bg-primary data-active:text-card dark:data-active:text-card data-active:input-shadow! data-active:border-0.5 
                                       data-active:hover:text-white data-active:[&>span]:bg-card data-active:[&>span]:text-foreground cursor-pointer'
                                 >
                                     {tab.icon}
                                     {tab.name}
                                     <span className="rounded-full px-1.5 py-0.5 text-[10px] font-bold bg-muted text-foreground/60" >
-                                        { tab.value === 'all-notes' ? notes.length : notes.filter(note => note.isPinned).length }
+                                        {tab.value === 'all-notes' ? notes.length : notes.filter(note => note.isPinned).length}
                                     </span>
                                 </TabsTrigger>
                             ))}
@@ -59,44 +62,45 @@ const NotesPanel = ({ notes, isLoading, tab, setTab }: Props) => {
                     </TabsList>
 
                     {
-                        isLoading ? (
-                            <div>Loading notes...</div>
-                        ) :
-                            headerTabs.map(tab => (
-                                <TabsContent key={tab.value} value={tab.value}>
-                                    <div>
-                                        <h2 className="font-nunito text-2xl font-black tracking-tight text-foreground">
-                                            My Notes
-                                        </h2>
-                                        {notes.length && (
-                                            <p className="text-sm text-muted-foreground">
-                                                {notes.length} {notes.length === 1 ? "note" : "notes"}
-                                            </p>
-                                        )}
+                        headerTabs.map(tab => (
+                            <TabsContent key={tab.value} value={tab.value} className="min-h-[50vh]">
+                                <div>
+                                    <h2 className="font-nunito text-2xl font-black tracking-tight text-foreground">
+                                        My Notes
+                                    </h2>
+                                    {notes.length !== 0 && (
+                                        <p className="text-sm text-muted-foreground">
+                                            {notes.length} {notes.length === 1 ? "note" : "notes"}
+                                        </p>
+                                    )}
+                                </div>
+                                {
+                                    isLoading &&
+                                    <div className="flex gap-6">
+                                        <CardSkeleton />
+                                        <CardSkeleton />
                                     </div>
-                                    {
-                                        notes.length ?
-                                            <div className="mt-6 grid grid-cols-1 gap-5 min-[500px]:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 auto-rows-[minmax(190px,auto)]">
-                                                {
-                                                    notes.map((note, index) => (
-                                                        <NoteCard
-                                                            key={note._id}
-                                                            tone={cardTones[index % cardTones.length]}
-                                                            noteData={note}
-                                                        />
-                                                    ))
-                                                }
-                                            </div>
-                                            :
-                                            <EmptyState />
-
-                                    }
-
-                                </TabsContent>
-                            ))
+                                }
+                                {notes.length ?
+                                    <div className="mt-6 grid grid-cols-1 gap-5 min-[500px]:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 auto-rows-[minmax(190px,auto)]">
+                                        {
+                                            notes.map((note, index) => (
+                                                <NoteCard
+                                                    key={note._id}
+                                                    tone={cardTones[index % cardTones.length]}
+                                                    noteData={note}
+                                                />
+                                            ))
+                                        }
+                                    </div>
+                                    : 
+                                    search ? <EmptySearchState search={search} /> :
+                                        tab.value === "pinned" ? <EmptyPinnedState /> : <EmptyState />
+                                }
+                            </TabsContent>
+                        ))
                     }
                 </Tabs>
-
             </div>
         </div>
     )
