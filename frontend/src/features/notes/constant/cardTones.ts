@@ -1,4 +1,10 @@
-export const cardTones = [
+export type CardTone = {
+    bg: string
+    pinColor: string
+    chip: string
+    pillBg: string
+}
+export const cardTones: CardTone[] = [
     {
         bg: "var(--note-lavender)",
         pinColor: "text-[#714da7]",

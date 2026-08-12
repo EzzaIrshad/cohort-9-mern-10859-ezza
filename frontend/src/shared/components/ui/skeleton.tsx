@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils"
+import type { ReactElement } from "react"
 
 function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
     return (
@@ -12,7 +13,7 @@ function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
 
 export { Skeleton }
 
-export function CardSkeleton() {
+export function CardSkeleton(): ReactElement {
     return (
         <div className="w-full max-w-xs border border-stone-300 p-3 mt-3 rounded-lg space-y-1">
             <div className="space-y-1">

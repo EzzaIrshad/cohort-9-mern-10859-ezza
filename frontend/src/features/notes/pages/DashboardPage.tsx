@@ -19,7 +19,7 @@ const DashboardPage = () => {
         const stateTab = (location.state as { tab?: string } | null)?.tab;
         if (stateTab) {
             setTab(stateTab);
-            navigate(location.pathname, {replace: true, state: null})
+            navigate(location.pathname, { replace: true, state: null })
         }
     }, [location.state, location.pathname, navigate])
 
@@ -39,14 +39,13 @@ const DashboardPage = () => {
             />
 
             {/* Floating New Note button */}
-            <Link to={`/notes/new`}>
-                <button
-                    aria-label="Create new note"
-                    className="fixed bottom-6 right-6 z-50 inline-flex items-center rounded-full p-4 text-sm font-semibold 
+            <Link
+                to={`/notes/new`}
+                aria-label="Create new note"
+                className="fixed bottom-6 right-6 z-50 inline-flex items-center rounded-full p-4 text-sm font-semibold 
                     bg-accent border border-pink text-white icon-container-shadow transition hover:-translate-y-1 sm:bottom-8 sm:right-8"
-                >
-                    <Plus className="h-5 w-5" strokeWidth={2.75} />
-                </button>
+            >
+                <Plus className="h-5 w-5" strokeWidth={2.75} />
             </Link>
         </div >
     )

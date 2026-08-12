@@ -39,7 +39,10 @@ export const NoteCard = ({
     }
 
     const handleDelete = () => {
-        deleteMutation.mutate(noteData._id);
+        deleteMutation.mutate(noteData._id, {
+            onSuccess: () => toast.success("Note deleted"),
+            onError: () => toast.error("Failed to delete note")
+        });
     }
     return (
         <div
@@ -85,10 +88,7 @@ export const NoteCard = ({
                                     position: "bottom-right",
                                     action: {
                                         label: "Delete",
-                                        onClick: () => {
-                                            handleDelete();
-                                            toast.success("Item deleted");
-                                        },
+                                        onClick: () => {handleDelete},
                                     },
                                     cancel: {
                                         label: "Cancel",

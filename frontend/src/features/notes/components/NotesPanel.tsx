@@ -52,12 +52,12 @@ const NotesPanel = ({ notes, isLoading, tab, setTab, search }: Props) => {
                                 </TabsTrigger>
                             ))}
                         </div>
-                        <Link to={`/notes/new`}>
-                            <button className="group inline-flex shrink-0 items-center justify-center gap-1 sm:gap-2 rounded-full bg-accent border border-pink px-2.5 sm:px-5 py-1.75 md:py-3 text-xs sm:text-sm font-semibold text-card input-shadow transition hover:-translate-y-0.5">
-                                <Plus className="size-4" strokeWidth={2.5} />
-                                <span className="max-sm:hidden">Create new note</span>
-                                <span className="sm:hidden">Create</span>
-                            </button>
+                        <Link
+                            to="/notes/new"
+                            className="group inline-flex shrink-0 items-center justify-center gap-1 sm:gap-2 rounded-full bg-accent border border-pink px-2.5 sm:px-5 py-1.75 md:py-3 text-xs sm:text-sm font-semibold text-card input-shadow transition hover:-translate-y-0.5">
+                            <Plus className="size-4" strokeWidth={2.5} />
+                            <span className="max-sm:hidden">Create new note</span>
+                            <span className="sm:hidden">Create</span>
                         </Link>
                     </TabsList>
 
@@ -81,22 +81,24 @@ const NotesPanel = ({ notes, isLoading, tab, setTab, search }: Props) => {
                                         <CardSkeleton />
                                     </div>
                                 }
-                                {notes.length ?
-                                    <div className="mt-6 grid grid-cols-1 gap-5 min-[500px]:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 auto-rows-[minmax(190px,auto)]">
-                                        {
-                                            notes.map((note, index) => (
-                                                <NoteCard
-                                                    key={note._id}
-                                                    tone={cardTones[index % cardTones.length]}
-                                                    noteData={note}
-                                                />
-                                            ))
-                                        }
-                                    </div>
-                                    : 
-                                    search ? <EmptySearchState search={search} /> :
-                                        tab.value === "pinned" ? <EmptyPinnedState /> : <EmptyState />
-                                }
+                                {!isLoading && (
+                                    notes.length ? (
+                                        <div className="mt-6 grid grid-cols-1 gap-5 min-[500px]:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 auto-rows-[minmax(190px,auto)]">
+                                            {
+                                                notes.map((note, index) => (
+                                                    <NoteCard
+                                                        key={note._id}
+                                                        tone={cardTones[index % cardTones.length]}
+                                                        noteData={note}
+                                                    />
+                                                ))
+                                            }
+                                        </div>
+                                    ) : (
+                                        search ? <EmptySearchState search={search} /> :
+                                            tab.value === "pinned" ? <EmptyPinnedState /> : <EmptyState />
+                                    )
+                                )}
                             </TabsContent>
                         ))
                     }
