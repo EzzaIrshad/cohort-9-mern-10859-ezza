@@ -88,7 +88,7 @@ export const NoteCard = ({
                                     position: "bottom-right",
                                     action: {
                                         label: "Delete",
-                                        onClick: () => {handleDelete},
+                                        onClick: handleDelete,
                                     },
                                     cancel: {
                                         label: "Cancel",

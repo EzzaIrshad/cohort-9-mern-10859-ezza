@@ -8,16 +8,18 @@ interface DashboardContext {
     search: string;
 }
 
+type DashboardTab = "all-notes" | "pinned";
+
 const DashboardPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { search } = useOutletContext<DashboardContext>();
 
-    const [tab, setTab] = useState("all-notes");
+    const [tab, setTab] = useState<DashboardTab>("all-notes");
 
     useEffect(() => {
-        const stateTab = (location.state as { tab?: string } | null)?.tab;
-        if (stateTab) {
+        const stateTab = (location.state as { tab?: unknown } | null | undefined)?.tab;
+        if (stateTab === "all-notes" || stateTab === "pinned") {
             setTab(stateTab);
             navigate(location.pathname, { replace: true, state: null })
         }
@@ -34,7 +36,7 @@ const DashboardPage = () => {
                 notes={data?.data ?? []}
                 isLoading={isLoading}
                 tab={tab}
-                setTab={setTab}
+                setTab={(tab: string) => setTab(tab as DashboardTab)}
                 search={search}
             />
 
