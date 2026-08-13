@@ -9,9 +9,13 @@ import { getNote } from "../api/notes.api"
  *
  * @param id Note ID.
  */
-export const useGetNote = (id: string) => {
+export const useGetNote = (
+    id: string,
+    enabled = true
+) => {
     return useQuery({
         queryKey: ["note", id],
-        queryFn: () => getNote(id)
+        queryFn: () => getNote(id),
+        enabled
     });
 }
