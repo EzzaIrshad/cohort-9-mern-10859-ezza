@@ -1,13 +1,17 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import type { ReactElement } from "react";
+import { useState, type ReactElement } from "react";
+import { useDebounce } from "@/shared/hooks/useDebounce";
 
 const DashboardLayout = (): ReactElement => {
+    const [search, setSearch] = useState("");
+    const debouncedSearch = useDebounce(search, 400);
+    
     return (
         <>
-        <Navbar />
+        <Navbar search={search} onSearch={setSearch}/>
         <main>
-            <Outlet />
+            <Outlet context={{search: debouncedSearch }}/>
         </main>
         </>
     )
