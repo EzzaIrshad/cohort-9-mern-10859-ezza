@@ -7,6 +7,7 @@ import SignUpPage from '@/features/auth/pages/RegisterPage';
 import ProtectedRoute from './ProtectedRoute';
 import DashboardLayout from '@/features/notes/layouts/DashboardLayout';
 import DashboardPage from '@/features/notes/pages/DashboardPage';
+import NoteEditorPage from '@/features/notes/pages/NoteEditorPage';
 
 export default function AppRouter(): ReactElement {
     return (
@@ -20,6 +21,8 @@ export default function AppRouter(): ReactElement {
             <Route element={<ProtectedRoute />} >
                 <Route element={<DashboardLayout />}>
                     <Route path="/dashboard" element={<DashboardPage />} />
+                    <Route path="/notes/new" element={<NoteEditorPage />} />
+                    <Route path="/notes/:id/edit" element={<NoteEditorPage />} />
                 </Route>
             </Route>
 
