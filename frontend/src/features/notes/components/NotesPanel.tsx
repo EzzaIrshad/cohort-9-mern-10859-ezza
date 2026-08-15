@@ -6,6 +6,7 @@ import { EmptyPinnedState, EmptySearchState, EmptyState } from "./EmptyState"
 import { NoteCard } from "./NoteCard"
 import type { Note } from "../types/notes.types"
 import { cardTones } from "../constant/cardTones"
+import type { DashboardTab } from "../layouts/DashboardLayout"
 
 const headerTabs = [
     {
@@ -23,8 +24,8 @@ const headerTabs = [
 interface Props {
     notes: Note[];
     isLoading: boolean;
-    tab: string;
-    setTab: (tab: string) => void;
+    tab: DashboardTab;
+    setTab: (tab: DashboardTab) => void;
     search: string;
 }
 
