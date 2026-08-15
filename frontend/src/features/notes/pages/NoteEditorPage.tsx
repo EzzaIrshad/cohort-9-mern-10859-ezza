@@ -1,16 +1,24 @@
-import { Sparkles } from "lucide-react"
 import { useNavigate, useParams } from "react-router-dom"
-import EditorTopBar from "../components/EditorTopBar"
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createNoteSchema, updateNoteSchema, type CreateNoteInput, type UpdateNoteInput } from "../schemas/note.schema";
+import { useEffect } from "react";
+import { toast } from "sonner";
+
+import { Sparkles } from "lucide-react"
+import { MdError } from "react-icons/md";
+
+import {
+    createNoteSchema,
+    updateNoteSchema,
+    type CreateNoteInput,
+    type UpdateNoteInput
+} from "../schemas/note.schema";
 import { useGetNote } from "../hooks/useGetNote";
 import { useCreateNote } from "../hooks/useCreateNote";
 import { useUpdateNote } from "../hooks/useUpdateNote";
-import { useEffect } from "react";
-import { MdError } from "react-icons/md";
+import EditorTopBar from "../components/EditorTopBar"
 import TagInput from "../components/TagInput";
-import { toast } from "sonner";
+import TextEditor from "../components/TextEditor";
 
 const NoteEditorPage = () => {
     const navigate = useNavigate();
@@ -76,7 +84,7 @@ const NoteEditorPage = () => {
                 createMutation={{ isLoading: createMutation.isPending }}
             />
 
-            {/* Workspace panel */}
+            {/* Editor Layout */}
             <section
                 className="relative mt-4 2xl:mt-6 overflow-hidden rounded-xl border border-border/60 bg-card shadow-card">
                 {/* Accent stripe */}
@@ -86,7 +94,7 @@ const NoteEditorPage = () => {
 
                     <div className="flex flex-wrap items-center gap-2">
                         <span
-                            className="inline-flex items-center gap-1.5 rounded-full bg-primary/40 text-primary px-3 py-1 text-xs font-semibold">
+                            className="inline-flex items-center gap-1.5 rounded-full bg-primary/40 text-secondary-foreground px-3 py-1 text-xs font-semibold">
                             <Sparkles className="h-3 w-3" />
                             {isEdit ? "Editing note" : "New note"}
                         </span>
@@ -96,7 +104,6 @@ const NoteEditorPage = () => {
                         id="note-editor-form"
                         onSubmit={handleSubmit(onSubmit)}>
 
-                        {/* Title */}
                         <div className="mt-4">
                             <label htmlFor="note-title" className="sr-only">Note title</label>
                             <input
@@ -108,35 +115,56 @@ const NoteEditorPage = () => {
                                 className={`w-full bg-transparent font-nunito text-3xl sm:text-4xl font-extrabold text-foreground placeholder:text-foreground/25 focus:outline-none  border-b-2 border-transparent focus:border-primary pb-2`}
                             />
                             {errors.title?.message && (
-                                <div className="flex items-center gap-2 mt-1.5 text-destructive">
-                                    <MdError size={16} />
-                                    <p id="title-error" className="text-xs">
-                                        {errors.title?.message}
-                                    </p>
-                                </div>
+                                <ErrorMessage error={errors.title?.message} />
                             )}
                         </div>
 
-                        {/* Editor Component */}
-                        {/* <TiptapEditor
-                        value="<p>Hello world! Start editing this text...</p>"
-                        onChange={handleEditorChange}
-                    /> */}
+                        <Controller
+                            name="content"
+                            control={control}
+                            render={({ field, fieldState }) => (
+                                <div>
+                                    <TextEditor
+                                        value={field.value ?? ""}
+                                        onChange={field.onChange}
+                                    />
+                                    {fieldState.error && (
+                                        <ErrorMessage error={fieldState.error.message} />
+                                    )}
+                                </div>
+                            )}
+                        />
 
                         <Controller
                             name="tags"
                             control={control}
-                            render={({ field }) => (
-                                <TagInput
-                                    value={field.value ?? []}
-                                    onChange={field.onChange}
-                                />
+                            render={({ field, fieldState }) => (
+                                <div>
+                                    <TagInput
+                                        value={field.value ?? []}
+                                        onChange={field.onChange}
+                                    />
+                                    {fieldState.error && (
+                                        <ErrorMessage error={fieldState.error.message} />
+                                    )}
+                                </div>
                             )}
                         />
                     </form>
                 </div>
             </section>
         </main>
+    )
+}
+
+function ErrorMessage({error}: {error: string | undefined}) {
+    return (
+        <div className="flex items-center gap-2 mt-1.5 text-destructive">
+            <MdError size={16} />
+            <p id="title-error" className="text-xs">
+                {error}
+            </p>
+        </div>
     )
 }
 

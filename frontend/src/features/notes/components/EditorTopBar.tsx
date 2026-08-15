@@ -46,6 +46,7 @@ const EditorTopBar = ({ isEdit, updateMutation, createMutation }: Props) => {
                 <button
                     type="submit"
                     form="note-editor-form"
+                    aria-label={isEdit ? "Save changes" : "Create note"}
                     disabled={updateMutation.isLoading || createMutation.isLoading}
                     className="group inline-flex shrink-0 items-center justify-center gap-1 cursor-pointer sm:gap-2 rounded-full bg-accent border border-pink px-2.5 sm:px-5 py-1.75 md:py-2.5 text-xs sm:text-sm font-semibold text-card input-shadow">
                     <Save className="size-4" strokeWidth={2.5} />

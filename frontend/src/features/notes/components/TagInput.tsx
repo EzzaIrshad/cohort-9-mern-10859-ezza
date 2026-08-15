@@ -27,10 +27,8 @@ const TagInput = ({ value, onChange }: TagProps) => {
     return (
         <div className="w-full px-3">
 
-            {/* Wrapper input container simulating a single text box */}
             <div className="flex flex-wrap items-center gap-2 p-2 rounded-xs bg-background input-shadow focus-within:border-ring border min-h-11">
 
-                {/* Rendered Tag List */}
                 {value.map(tag => (
                     <span
                         key={tag}
@@ -40,7 +38,8 @@ const TagInput = ({ value, onChange }: TagProps) => {
                         <button
                             type="button"
                             onClick={() => removeTag(tag)}
-                            className="text-primary hover:text-red-500 transition-colors duration-150 focus:outline-none text-base font-bold leading-none pl-1"
+                            aria-label={`Remove ${tag}`}
+                            className="text-secondary-foreground cursor-pointer hover:text-red-500 transition-colors duration-150 focus:outline-none text-base font-bold leading-none pl-1"
                         >
                             &times;
                         </button>
@@ -57,6 +56,7 @@ const TagInput = ({ value, onChange }: TagProps) => {
                             addTag()
                         }
                     }}
+                    aria-label="Add a Tag"
                     className="flex-1 bg-transparent border-0 outline-none p-1 text-sm text-gray-900 placeholder-gray-400 focus:ring-0 min-w-30"
                 />
             </div>

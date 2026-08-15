@@ -1,5 +1,9 @@
 @import 'https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap';
+@import './styles/_variables.scss';
+@import './styles/_keyframe-animations.scss';
+
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
@@ -249,6 +253,15 @@
 
     html {
         @apply font-nunito;
+    }
+}
+
+.tiptap {
+    p {
+        @apply my-0 first:mt-0 last:mb-0 text-base leading-relaxed dark:text-white;
+    }
+    h1, h2, h3, h4 {
+        @apply dark:text-white;
     }
 }
 
