@@ -143,10 +143,7 @@ const NoteEditorPage = () => {
                         <Controller
                             name="tags"
                             control={control}
-                            render={({ field, fieldState }) => {
-                                console.log("TAGS ERROR:", fieldState.error);
-                                return(
-                                    (
+                            render={({ field, fieldState }) => (
                                 <div>
                                     <TagInput
                                         value={field.value ?? []}
@@ -157,8 +154,7 @@ const NoteEditorPage = () => {
                                     )}
                                 </div>
                             )
-                                )
-                            }}
+                            }
                         />
                     </form>
                 </div>
