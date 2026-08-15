@@ -5,8 +5,15 @@ import "@/features/notes/components/tiptap-ui-primitive/badge/badge-colors.scss"
 import "@/features/notes/components/tiptap-ui-primitive/badge/badge.scss"
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: "ghost" | "white" | "gray" | "green" | "yellow" | "default"
-  size?: "default" | "small"
+  variant?: 
+    | "default"
+    | "ghost"
+    | "gray"
+    | "green"
+    | "yellow"
+    | "red"
+    | "brand"
+  size?: "default" | "small" | "large"
   appearance?: "default" | "subdued" | "emphasized"
   trimText?: boolean
 }

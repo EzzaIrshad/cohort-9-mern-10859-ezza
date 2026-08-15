@@ -3,16 +3,10 @@ import { Link } from "react-router-dom"
 
 interface Props {
     isEdit: boolean;
-    updateMutation: {
-        isLoading: boolean;
-    };
-    createMutation: {
-        isLoading: boolean;
-    };
-
+    isSubmitting: boolean;
 }
 
-const EditorTopBar = ({ isEdit, updateMutation, createMutation }: Props) => {
+const EditorTopBar = ({ isEdit, isSubmitting }: Props) => {
     return (
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-3">
@@ -47,13 +41,13 @@ const EditorTopBar = ({ isEdit, updateMutation, createMutation }: Props) => {
                     type="submit"
                     form="note-editor-form"
                     aria-label={isEdit ? "Save changes" : "Create note"}
-                    disabled={updateMutation.isLoading || createMutation.isLoading}
+                    disabled={isSubmitting}
                     className="group inline-flex shrink-0 items-center justify-center gap-1 cursor-pointer sm:gap-2 rounded-full bg-accent border border-pink px-2.5 sm:px-5 py-1.75 md:py-2.5 text-xs sm:text-sm font-semibold text-card input-shadow">
                     <Save className="size-4" strokeWidth={2.5} />
                     {
                         isEdit ?
-                            (isEdit && updateMutation.isLoading ? "Saving..." : "Save changes")
-                            : (createMutation.isLoading ? "Creating..." : "Create note")
+                            ( isSubmitting ? "Saving..." : "Save changes")
+                            : (isSubmitting ? "Creating..." : "Create note")
                     }
                 </button>
             </div>

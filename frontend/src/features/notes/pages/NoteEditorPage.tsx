@@ -44,7 +44,7 @@ const NoteEditorPage = () => {
     const { data: note } = useGetNote(id ?? "", isEdit);
 
     const createMutation = useCreateNote();
-    const updateMutation = useUpdateNote(id!);
+    const updateMutation = useUpdateNote(id ?? "");
 
     useEffect(() => {
         if (note) {
@@ -62,7 +62,10 @@ const NoteEditorPage = () => {
             updateMutation.mutate(data as UpdateNoteInput, {
                 onSuccess: () => {
                     toast.success("Note updated successfully");
-                }
+                },
+                onError: () => {
+                    toast.error("Failed to update note. Please try again.");
+                },
             })
             return
         }
@@ -71,7 +74,10 @@ const NoteEditorPage = () => {
             onSuccess: () => {
                 toast.success("Note created successfully");
                 navigate("/dashboard");
-            }
+            },
+            onError: () => {
+                toast.error("Failed to create note. Please try again.");
+            },
         });
     }
 
@@ -80,8 +86,7 @@ const NoteEditorPage = () => {
 
             <EditorTopBar
                 isEdit={isEdit}
-                updateMutation={{ isLoading: updateMutation.isPending }}
-                createMutation={{ isLoading: createMutation.isPending }}
+                isSubmitting={updateMutation.isPending || createMutation.isPending}
             />
 
             {/* Editor Layout */}
@@ -110,12 +115,12 @@ const NoteEditorPage = () => {
                                 id="note-title"
                                 placeholder="Untitled note"
                                 aria-invalid={!!errors.title}
-                                aria-describedby="title-error"
+                                aria-describedby={errors.title ? "title-error" : undefined}
                                 {...register("title")}
                                 className={`w-full bg-transparent font-nunito text-3xl sm:text-4xl font-extrabold text-foreground placeholder:text-foreground/25 focus:outline-none  border-b-2 border-transparent focus:border-primary pb-2`}
                             />
                             {errors.title?.message && (
-                                <ErrorMessage error={errors.title?.message} />
+                                <ErrorMessage id="title-error" error={errors.title?.message} />
                             )}
                         </div>
 
@@ -129,7 +134,7 @@ const NoteEditorPage = () => {
                                         onChange={field.onChange}
                                     />
                                     {fieldState.error && (
-                                        <ErrorMessage error={fieldState.error.message} />
+                                        <ErrorMessage id="content-error" error={fieldState.error.message} />
                                     )}
                                 </div>
                             )}
@@ -138,17 +143,22 @@ const NoteEditorPage = () => {
                         <Controller
                             name="tags"
                             control={control}
-                            render={({ field, fieldState }) => (
+                            render={({ field, fieldState }) => {
+                                console.log("TAGS ERROR:", fieldState.error);
+                                return(
+                                    (
                                 <div>
                                     <TagInput
                                         value={field.value ?? []}
                                         onChange={field.onChange}
                                     />
                                     {fieldState.error && (
-                                        <ErrorMessage error={fieldState.error.message} />
+                                        <ErrorMessage id="tags-error" error={fieldState.error.message} />
                                     )}
                                 </div>
-                            )}
+                            )
+                                )
+                            }}
                         />
                     </form>
                 </div>
@@ -157,11 +167,11 @@ const NoteEditorPage = () => {
     )
 }
 
-function ErrorMessage({error}: {error: string | undefined}) {
+function ErrorMessage({ id, error }: { id: string; error: string | undefined }) {
     return (
         <div className="flex items-center gap-2 mt-1.5 text-destructive">
             <MdError size={16} />
-            <p id="title-error" className="text-xs">
+            <p id={id} className="text-xs">
                 {error}
             </p>
         </div>

@@ -52,11 +52,14 @@ export const headingIcons = {
   4: Heading4Icon,
 }
 
+const isMac = typeof navigator !== "undefined" && /Mac|iPhone|iPad|iPod/i.test(navigator.platform)
+const modKey = isMac ? "⌘" : "Ctrl"
+
 export const HEADING_SHORTCUT_KEYS: Record<Level, string> = {
-  1: "ctrl+alt+1",
-  2: "ctrl+alt+2",
-  3: "ctrl+alt+3",
-  4: "ctrl+alt+4",
+  1: `${modKey}+Alt+1`,
+  2: `${modKey}+Alt+2`,
+  3: `${modKey}+Alt+3`,
+  4: `${modKey}+Alt+4`,
 }
 
 /**
@@ -311,9 +314,11 @@ export function useHeading(config: UseHeadingConfig) {
     handleSelectionUpdate()
 
     editor.on("selectionUpdate", handleSelectionUpdate)
+    editor.on("transaction", handleSelectionUpdate)
 
     return () => {
       editor.off("selectionUpdate", handleSelectionUpdate)
+      editor.off("transaction", handleSelectionUpdate)
     }
   }, [editor, level, hideWhenUnavailable])
 

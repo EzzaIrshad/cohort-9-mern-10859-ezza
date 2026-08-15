@@ -39,7 +39,7 @@ export function HeadingShortcutBadge({
   level: Level
   shortcutKeys?: string
 }) {
-  return <Badge>{parseShortcutKeys({ shortcutKeys })}</Badge>
+  return <Badge>{parseShortcutKeys({ shortcutKeys }).join("+")}</Badge>
 }
 
 /**
@@ -96,8 +96,6 @@ export const HeadingButton = forwardRef<HTMLButtonElement, HeadingButtonProps>(
         type="button"
         variant="ghost"
         data-active-state={isActive ? "on" : "off"}
-        role="button"
-        tabIndex={-1}
         disabled={!canToggle}
         data-disabled={!canToggle}
         aria-label={label}

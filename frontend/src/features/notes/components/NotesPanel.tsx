@@ -31,10 +31,16 @@ interface Props {
 
 const NotesPanel = ({ notes, isLoading, tab, setTab, search }: Props) => {
 
+    const handleTabChange = (value: string) => {
+        if (value === "all-notes" || value === "pinned") {
+            setTab(value);
+        }
+    };
+
     return (
         <div className="mx-auto flex w-full max-w-330 h-full gap-2 px-4 pb-3 sm:px-6 lg:px-8">
             <div className="py-4 md:py-6 w-full">
-                <Tabs value={tab} onValueChange={setTab} className='gap-6 2xl:gap-10 w-full h-full'>
+                <Tabs value={tab} onValueChange={handleTabChange} className='gap-6 2xl:gap-10 w-full h-full'>
                     <TabsList className="bg-transparent h-6 md:h-10! p-0 flex items-start justify-between w-full">
                         <div className="gap-3 md:gap-5 flex items-start justify-between">
                             {headerTabs.map(tab => (

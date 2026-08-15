@@ -7,21 +7,36 @@ type TagProps = {
 
 const TagInput = ({ value, onChange }: TagProps) => {
     const [input, setInput] = useState("");
+    const [error, setError] = useState("");
 
     const addTag = () => {
         const tag = input.trim();
 
         if (!tag) return;
 
-        if (!value.includes(tag)) {
-            onChange([...value, tag])
+        if (tag.length > 30) {
+            setError("Tag cannot exceed 30 characters.");
+            return;
         }
 
-        setInput("")
+        if (value.length >= 20) {
+            setError("Maximum 20 tags are allowed.");
+            return;
+        }
+
+        if (value.includes(tag)) {
+            setError("This tag already exists.");
+            return;
+        }
+
+        onChange([...value, tag]);
+        setInput("");
+        setError("");
     }
 
     const removeTag = (tagToRemove: string) => {
         onChange(value.filter(tag => tag !== tagToRemove))
+        setError("");
     };
 
     return (
@@ -32,7 +47,7 @@ const TagInput = ({ value, onChange }: TagProps) => {
                 {value.map(tag => (
                     <span
                         key={tag}
-                        className="flex items-center gap-1 bg-primary/40 text-forground text-sm font-medium px-2.5 py-1 rounded-md border border-primary"
+                        className="flex items-center gap-1 bg-primary/40 text-foreground text-sm font-medium px-2.5 py-1 rounded-md border border-primary"
                     >
                         {tag}
                         <button
@@ -57,12 +72,16 @@ const TagInput = ({ value, onChange }: TagProps) => {
                         }
                     }}
                     aria-label="Add a Tag"
-                    className="flex-1 bg-transparent border-0 outline-none p-1 text-sm text-gray-900 placeholder-gray-400 focus:ring-0 min-w-30"
+                    className="flex-1 bg-transparent border-0 outline-none p-1 text-sm text-foreground placeholder-muted-foreground focus:ring-0 min-w-30"
                 />
             </div>
-
-            <p className="mt-2 text-xs text-gray-400">
-                Press <kbd className="bg-gray-100 px-1 border rounded text-gray-600 font-sans text-[10px]">Enter</kbd> to add tag.
+            {error && (
+                <p className="mt-2 text-xs text-destructive">
+                    {error}
+                </p>
+            )}
+            <p className="mt-2 text-xs text-muted-foreground">
+                Press <kbd className="bg-muted px-1 border rounded text-foreground font-sans text-[10px]">Enter</kbd> to add tag.
             </p>
         </div>
     );

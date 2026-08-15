@@ -27,6 +27,7 @@ import {
   FloatingDelayGroup,
 } from "@floating-ui/react"
 import "@/features/notes/components/tiptap-ui-primitive/tooltip/tooltip.scss"
+import { cn } from "@/lib/tiptap-utils"
 
 interface TooltipProviderProps {
   children: React.ReactNode
@@ -182,9 +183,9 @@ export const TooltipTrigger = forwardRef<HTMLElement, TooltipTriggerProps>(
       return cloneElement(
         children,
         context.getReferenceProps({
-          ref,
-          ...props,
           ...(typeof children.props === "object" ? children.props : {}),
+          ...props,
+          ref,
           ...dataAttributes,
         })
       )
@@ -204,7 +205,7 @@ export const TooltipTrigger = forwardRef<HTMLElement, TooltipTriggerProps>(
 
 export const TooltipContent = forwardRef<HTMLDivElement, TooltipContentProps>(
   function TooltipContent(
-    { style, children, portal = true, portalProps = {}, ...props },
+    { style, className, children, portal = true, portalProps = {}, ...props },
     propRef
   ) {
     const context = useTooltipContext()
@@ -220,7 +221,7 @@ export const TooltipContent = forwardRef<HTMLDivElement, TooltipContentProps>(
           ...style,
         }}
         {...context.getFloatingProps(props)}
-        className="tiptap-tooltip"
+        className={cn("tiptap-tooltip", className)}
       >
         {children}
       </div>

@@ -19,15 +19,14 @@
   transition-timing-function: var(--tt-transition-easing-default);
 
   // focus-visible
-  &:focus-visible {
-    outline: none;
+  &:focus-visible:not([data-variant="check"]) {
+    box-shadow: 0 0 0 3px var(--tt-button-active-icon-color);
   }
 
   &[data-highlighted="true"],
   &[data-focus-visible="true"] {
     background-color: var(--tt-button-hover-bg-color);
     color: var(--tt-button-hover-text-color);
-    // outline: 2px solid var(--tt-button-active-icon-color);
   }
 
   &[data-weight="small"] {
@@ -153,9 +152,7 @@
   }
 
   /* button only has 2 icons and one of them is dropdown small */
-  &:has(> svg:nth-of-type(2)):has(> .tiptap-button-dropdown-small):not(
-      :has(> svg:nth-of-type(3))
-    ):not(:has(> .tiptap-button-text)) {
+  &:has(> svg:nth-of-type(2)):has(> .tiptap-button-dropdown-small):not( :has(> svg:nth-of-type(3))):not(:has(> .tiptap-button-text)) {
     gap: 0;
     padding-right: 0.25rem;
 
@@ -208,16 +205,13 @@
       transition-duration: var(--tt-transition-duration-default);
       transition-timing-function: var(--tt-transition-easing-default);
 
-      > svg {
+      >svg {
         width: 0.875rem;
         height: 0.875rem;
       }
     }
 
-    &:hover:not([disabled]):not([aria-checked="true"]):not(
-        [aria-checked="mixed"]
-      )
-      .tiptap-button-check {
+    &:hover:not([disabled]):not([aria-checked="true"]):not([aria-checked="mixed"]) .tiptap-button-check {
       border-color: var(--tt-button-check-hover-border-color);
       background-color: var(--tt-button-check-hover-bg-color);
     }
@@ -239,11 +233,11 @@
           width: 0.5rem;
           height: 0.125rem;
           border-radius: 999px;
-          background-color: currentColor;
+          background-color: currentcolor;
           content: "";
         }
 
-        > svg {
+        >svg {
           display: none;
         }
       }

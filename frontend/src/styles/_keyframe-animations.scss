@@ -1,4 +1,4 @@
-@keyframes fadeIn {
+@keyframes fade-in {
   from {
     opacity: 0;
   }
@@ -7,7 +7,7 @@
   }
 }
 
-@keyframes fadeOut {
+@keyframes fade-out {
   from {
     opacity: 1;
   }
@@ -16,7 +16,7 @@
   }
 }
 
-@keyframes zoomIn {
+@keyframes zoom-in {
   from {
     transform: scale(0.95);
   }
@@ -25,7 +25,7 @@
   }
 }
 
-@keyframes zoomOut {
+@keyframes zoom-out {
   from {
     transform: scale(1);
   }
@@ -45,7 +45,7 @@
   }
 }
 
-@keyframes slideFromTop {
+@keyframes slide-from-top {
   from {
     transform: translateY(-0.5rem);
   }
@@ -54,7 +54,7 @@
   }
 }
 
-@keyframes slideFromRight {
+@keyframes slide-from-right {
   from {
     transform: translateX(0.5rem);
   }
@@ -63,7 +63,7 @@
   }
 }
 
-@keyframes slideFromLeft {
+@keyframes slide-from-left {
   from {
     transform: translateX(-0.5rem);
   }
@@ -72,7 +72,7 @@
   }
 }
 
-@keyframes slideFromBottom {
+@keyframes slide-from-bottom {
   from {
     transform: translateY(0.5rem);
   }
