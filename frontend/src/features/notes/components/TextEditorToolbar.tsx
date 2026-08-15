@@ -19,6 +19,7 @@ export const TextEditorToolbar = ({ editor }: ToolbarProps) => {
 
                 {levels.map((level) => (
                     <HeadingButton
+                        key={level}
                         editor={editor}
                         level={level as Level}
                         showShortcut={false}
