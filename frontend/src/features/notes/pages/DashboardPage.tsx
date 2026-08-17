@@ -1,34 +1,23 @@
-import { Link, useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { useGetNotes } from "../hooks/useGetNotes";
 import { Plus } from "lucide-react";
 import NotesPanel from "../components/NotesPanel";
-import { useEffect, useState } from "react";
+import type { DashboardTab } from "../layouts/DashboardLayout";
 
 interface DashboardContext {
     search: string;
+    tab: DashboardTab;
+    setTab: (tab: DashboardTab) => void;
 }
 
-type DashboardTab = "all-notes" | "pinned";
-
 const DashboardPage = () => {
-    const location = useLocation();
-    const navigate = useNavigate();
-    const { search } = useOutletContext<DashboardContext>();
-
-    const [tab, setTab] = useState<DashboardTab>("all-notes");
-
-    useEffect(() => {
-        const stateTab = (location.state as { tab?: unknown } | null | undefined)?.tab;
-        if (stateTab === "all-notes" || stateTab === "pinned") {
-            setTab(stateTab);
-            navigate(location.pathname, { replace: true, state: null })
-        }
-    }, [location.state, location.pathname, navigate])
+    const { search, tab, setTab } = useOutletContext<DashboardContext>();
 
     const { data, isLoading } = useGetNotes({
         search: search || undefined,
         isPinned: tab === "pinned" ? true : undefined,
     });
+
     return (
         <div className="min-h-screen bg-background">
 
@@ -36,7 +25,7 @@ const DashboardPage = () => {
                 notes={data?.data ?? []}
                 isLoading={isLoading}
                 tab={tab}
-                setTab={(tab: string) => setTab(tab as DashboardTab)}
+                setTab={setTab}
                 search={search}
             />
 

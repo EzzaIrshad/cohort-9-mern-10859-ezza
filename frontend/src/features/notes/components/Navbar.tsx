@@ -4,13 +4,15 @@ import { FiSearch as Search } from "react-icons/fi";
 import { type ReactElement } from "react";
 import ThemeToggle from "@/shared/components/ThemeToggle";
 import AccountDropdown from "./AccountDropdown";
+import type { DashboardTab } from "../layouts/DashboardLayout";
 
 interface NavbarProps {
     search: string;
     onSearch: (value: string) => void;
+    setTab: (tab: DashboardTab) => void;
 }
 
-const Navbar = ({search, onSearch}: NavbarProps): ReactElement => {
+const Navbar = ({search, onSearch, setTab}: NavbarProps): ReactElement => {
     
     return (
         <nav className="sticky top-0 z-40 border-b border-border/50 bg-background shadow">
@@ -37,7 +39,7 @@ const Navbar = ({search, onSearch}: NavbarProps): ReactElement => {
                 {/* Right section */}
                 <div className="flex shrink-0 items-center gap-2 sm:gap-3 2xl:gap-6">
                     <ThemeToggle />
-                    <AccountDropdown />
+                    <AccountDropdown setTab={setTab}/>
                 </div>
 
 

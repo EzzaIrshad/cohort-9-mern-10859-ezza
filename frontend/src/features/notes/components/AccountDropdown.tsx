@@ -15,8 +15,9 @@ import { useTheme } from "@/app/providers/ThemeProvider"
 import { useGetUser } from "@/features/auth/hooks/useGetUser";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useNavigate } from "react-router-dom";
+import type { DashboardTab } from "../layouts/DashboardLayout";
 
-const AccountDropdown = () => {
+const AccountDropdown = ({ setTab }: { setTab: (tab: DashboardTab) => void }) => {
     const navigate = useNavigate();
 
     const { theme, setTheme } = useTheme();
@@ -90,7 +91,7 @@ const AccountDropdown = () => {
                         Profile
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                        onClick={() => navigate("/dashboard", { state: { tab: "pinned" } })}
+                        onClick={() => setTab("pinned")}
                         className="gap-3 hover:bg-primary/20! hover:rounded-[6px]">
                         <PinIcon aria-hidden="true" />
                         Pinned Notes
