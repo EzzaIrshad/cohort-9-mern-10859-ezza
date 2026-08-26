@@ -52,7 +52,7 @@ export interface UseMarkConfig {
   onToggled?: () => void
 }
 
-export const markIcons = {
+export const markIcons: Record<Mark, React.FC<React.ComponentPropsWithoutRef<"svg">>> = {
   bold: BoldIcon,
   italic: ItalicIcon,
   underline: UnderlineIcon,
@@ -194,11 +194,13 @@ export function useMark(config: UseMarkConfig) {
 
     handleSelectionUpdate()
 
-    editor.on("selectionUpdate", handleSelectionUpdate)
+    editor.on("selectionUpdate", handleSelectionUpdate);
+    editor.on("transaction", handleSelectionUpdate);
 
     return () => {
-      editor.off("selectionUpdate", handleSelectionUpdate)
-    }
+      editor.off("selectionUpdate", handleSelectionUpdate);
+      editor.off("transaction", handleSelectionUpdate);
+    };
   }, [editor, type, hideWhenUnavailable])
 
   const handleMark = useCallback(() => {

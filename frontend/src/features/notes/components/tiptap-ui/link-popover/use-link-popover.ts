@@ -112,15 +112,20 @@ export function useLinkHandler(props: LinkHandlerProps) {
   const [url, setUrl] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!editor) return
+    if (!editor) {
+      setUrl(null)
+      return
+    }
 
     // Get URL immediately on mount
     const { href } = editor.getAttributes("link")
 
-    if (isLinkActive(editor) && url === null) {
+    if (isLinkActive(editor)) {
       setUrl(href || "")
+    } else {
+      setUrl(null)
     }
-  }, [editor, url])
+  }, [editor])
 
   useEffect(() => {
     if (!editor) return

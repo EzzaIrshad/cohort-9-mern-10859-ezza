@@ -1,7 +1,6 @@
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { TextAlign } from '@tiptap/extension-text-align'
-import { Underline } from '@tiptap/extension-underline'
 import { Superscript } from '@tiptap/extension-superscript'
 import { Subscript } from '@tiptap/extension-subscript'
 import { Highlight } from '@tiptap/extension-highlight'
@@ -15,7 +14,7 @@ interface TextEditorProps {
 
 export default function TextEditor({ value, onChange }: TextEditorProps) {
     const editor = useEditor({
-        extensions: [StarterKit, Underline, Superscript, Subscript, TextAlign.configure({ types: ['heading', 'paragraph'] }), Highlight.configure({ multicolor: true })],
+        extensions: [StarterKit, Superscript, Subscript, TextAlign.configure({ types: ['heading', 'paragraph'] }), Highlight.configure({ multicolor: true })],
         content: value || "",
         editorProps: {
             attributes: {

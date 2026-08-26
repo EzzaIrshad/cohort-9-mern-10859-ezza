@@ -322,11 +322,13 @@ export function useList(config: UseListConfig) {
 
     handleSelectionUpdate()
 
-    editor.on("selectionUpdate", handleSelectionUpdate)
+    editor.on("selectionUpdate", handleSelectionUpdate);
+    editor.on("transaction", handleSelectionUpdate);
 
     return () => {
-      editor.off("selectionUpdate", handleSelectionUpdate)
-    }
+      editor.off("selectionUpdate", handleSelectionUpdate);
+      editor.off("transaction", handleSelectionUpdate);
+    };
   }, [editor, type, hideWhenUnavailable])
 
   const handleToggle = useCallback(() => {

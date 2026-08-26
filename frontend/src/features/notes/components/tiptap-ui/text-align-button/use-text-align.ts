@@ -98,7 +98,7 @@ export function isTextAlignActive(
   editor: Editor | null,
   align: TextAlign
 ): boolean {
-  if (!editor || !editor.isEditable) return false
+  if (!editor || editor.isDestroyed || !editor.isEditable) return false
   return editor.isActive({ textAlign: align })
 }
 
@@ -207,11 +207,13 @@ export function useTextAlign(config: UseTextAlignConfig) {
 
     handleSelectionUpdate()
 
-    editor.on("selectionUpdate", handleSelectionUpdate)
+    editor.on("selectionUpdate", handleSelectionUpdate);
+    editor.on("transaction", handleSelectionUpdate);
 
     return () => {
-      editor.off("selectionUpdate", handleSelectionUpdate)
-    }
+      editor.off("selectionUpdate", handleSelectionUpdate);
+      editor.off("transaction", handleSelectionUpdate);
+    };
   }, [editor, hideWhenUnavailable, align])
 
   const handleTextAlign = useCallback(() => {

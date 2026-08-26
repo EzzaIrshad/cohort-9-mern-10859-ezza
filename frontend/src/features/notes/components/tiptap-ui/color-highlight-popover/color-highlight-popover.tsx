@@ -55,11 +55,11 @@ export interface ColorHighlightPopoverContentProps {
 
 export interface ColorHighlightPopoverProps
   extends
-    Omit<ButtonProps, "type">,
-    Pick<
-      UseColorHighlightConfig,
-      "editor" | "hideWhenUnavailable" | "onApplied"
-    > {
+  Omit<ButtonProps, "type">,
+  Pick<
+    UseColorHighlightConfig,
+    "editor" | "hideWhenUnavailable" | "onApplied"
+  > {
   /**
    * Optional colors to use in the highlight popover.
    * If not provided, defaults to a predefined set of colors.
@@ -82,7 +82,6 @@ export const ColorHighlightPopoverButton = forwardRef<
     variant="ghost"
     data-appearance="default"
     role="button"
-    tabIndex={-1}
     aria-label="Highlight text"
     tooltip="Highlight"
     ref={ref}
@@ -123,8 +122,11 @@ export function ColorHighlightPopoverContent({
       const highlightedElement = containerRef.current.querySelector(
         '[data-highlighted="true"]'
       ) as HTMLElement
-      if (highlightedElement) highlightedElement.click()
-      if (item.value === "none") handleRemoveHighlight()
+      if (item.value === "none") {
+        handleRemoveHighlight()
+      } else if (highlightedElement) {
+        highlightedElement.click()
+      }
       return true
     },
     autoSelectFirstItem: false,
