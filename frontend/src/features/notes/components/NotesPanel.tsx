@@ -7,6 +7,7 @@ import { NoteCard } from "./NoteCard"
 import type { Note } from "../types/notes.types"
 import { cardTones } from "../constant/cardTones"
 import type { DashboardTab } from "../layouts/DashboardLayout"
+import SortMenu from "./SortMenu"
 
 const headerTabs = [
     {
@@ -27,9 +28,11 @@ interface Props {
     tab: DashboardTab;
     setTab: (tab: DashboardTab) => void;
     search: string;
+    sort: "createdAt" | "updatedAt";
+    setSort: (sort: "createdAt" | "updatedAt") => void;
 }
 
-const NotesPanel = ({ notes, isLoading, tab, setTab, search }: Props) => {
+const NotesPanel = ({ notes, isLoading, tab, setTab, search, sort, setSort }: Props) => {
 
     const handleTabChange = (value: string) => {
         if (value === "all-notes" || value === "pinned") {
@@ -59,13 +62,19 @@ const NotesPanel = ({ notes, isLoading, tab, setTab, search }: Props) => {
                                 </TabsTrigger>
                             ))}
                         </div>
-                        <Link
-                            to="/notes/new"
-                            className="group inline-flex shrink-0 items-center justify-center gap-1 sm:gap-2 rounded-full bg-accent border border-pink px-2.5 sm:px-5 py-1.75 md:py-3 text-xs sm:text-sm font-semibold text-card input-shadow transition hover:-translate-y-0.5">
-                            <Plus className="size-4" strokeWidth={2.5} />
-                            <span className="max-sm:hidden">Create new note</span>
-                            <span className="sm:hidden">Create</span>
-                        </Link>
+                        <div className="flex items-center gap-2">
+                            <SortMenu
+                                sort={sort}
+                                setSort={setSort}
+                            />
+                            <Link
+                                to="/notes/new"
+                                className="group inline-flex shrink-0 items-center justify-center gap-1 sm:gap-2 rounded-full bg-accent border border-pink px-2.5 sm:px-5 py-1.75 md:py-3 text-xs sm:text-sm font-semibold text-card input-shadow transition hover:-translate-y-0.5">
+                                <Plus className="size-4" strokeWidth={2.5} />
+                                <span className="max-sm:hidden">Create new note</span>
+                                <span className="sm:hidden">Create</span>
+                            </Link>
+                        </div>
                     </TabsList>
 
                     {

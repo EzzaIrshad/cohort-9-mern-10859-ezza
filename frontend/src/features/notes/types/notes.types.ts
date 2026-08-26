@@ -12,5 +12,5 @@ export interface Note {
 export interface NotesQueryParams {
     search?: string,
     isPinned?:boolean,
-    sort?: "newest" | "oldest" | "title"
+    sort?: "createdAt" | "updatedAt"
 }

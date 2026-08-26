@@ -3,6 +3,7 @@ import { useGetNotes } from "../hooks/useGetNotes";
 import { Plus } from "lucide-react";
 import NotesPanel from "../components/NotesPanel";
 import type { DashboardTab } from "../layouts/DashboardLayout";
+import { useState } from "react";
 
 interface DashboardContext {
     search: string;
@@ -12,10 +13,12 @@ interface DashboardContext {
 
 const DashboardPage = () => {
     const { search, tab, setTab } = useOutletContext<DashboardContext>();
+    const [sort, setSort] = useState<"createdAt" | "updatedAt">("createdAt");
 
     const { data, isLoading } = useGetNotes({
         search: search || undefined,
         isPinned: tab === "pinned" ? true : undefined,
+        sort,
     });
 
     return (
@@ -27,6 +30,8 @@ const DashboardPage = () => {
                 tab={tab}
                 setTab={setTab}
                 search={search}
+                sort={sort}
+                setSort={setSort}
             />
 
             {/* Floating New Note button */}
