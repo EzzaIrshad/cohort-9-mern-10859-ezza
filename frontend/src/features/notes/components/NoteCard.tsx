@@ -140,7 +140,9 @@ export const NoteCard = ({
                         {noteData.title}
                     </h3>
                     <p className="mt-2 line-clamp-3 whitespace-pre-line text-sm leading-relaxed text-foreground/70">
-                        {noteData.content.replace(/<[^>]+>/g, ' ')}
+                        {noteData.content
+                            .replace(/<br\s*\/?>|<\/(?:p|div|li)\s*>/gi, "\n")
+                            .replace(/<[^>]+>/g, " ")}
                     </p>
                 </div>
             </div>

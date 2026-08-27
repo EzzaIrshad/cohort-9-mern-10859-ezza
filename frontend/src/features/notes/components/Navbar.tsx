@@ -1,11 +1,10 @@
 import NotikLogo from "@/shared/components/NotikLogo"
 import { Link } from "react-router-dom"
 import { FiSearch as Search } from "react-icons/fi";
-import { useState, type ReactElement } from "react";
+import { type ReactElement } from "react";
 import ThemeToggle from "@/shared/components/ThemeToggle";
 import AccountDropdown from "./AccountDropdown";
 import type { DashboardTab } from "../layouts/DashboardLayout";
-import UserProfile from "./UserProfile";
 
 interface NavbarProps {
     search: string;
@@ -14,7 +13,6 @@ interface NavbarProps {
 }
 
 const Navbar = ({ search, onSearch, setTab }: NavbarProps): ReactElement => {
-    const [showProfile, setShowProfile] = useState(false);
 
     return (
         <>
@@ -42,18 +40,11 @@ const Navbar = ({ search, onSearch, setTab }: NavbarProps): ReactElement => {
                     {/* Right section */}
                     <div className="flex shrink-0 items-center gap-2 sm:gap-3 2xl:gap-6">
                         <ThemeToggle />
-                        <AccountDropdown setTab={setTab} setShowProfile={setShowProfile} />
+                        <AccountDropdown setTab={setTab} />
                     </div>
 
                 </div>
             </nav>
-
-            {showProfile && (
-                <UserProfile 
-                open={showProfile}
-                onOpenChange={setShowProfile}
-                />
-            )}
         </>
     )
 }

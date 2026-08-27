@@ -22,8 +22,8 @@ const PublicRoute = (): ReactElement => {
         )
     }
 
-    if (!data?.data) {
-        return <Navigate to="/dashboard" state={{ from: location }} replace />
+    if (data?.data) {
+        return <Navigate to="/dashboard" replace />;
     }
 
     return <Outlet />
