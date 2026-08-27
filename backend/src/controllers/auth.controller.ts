@@ -139,7 +139,7 @@ export const loginUser = async (req: Request, res: Response) => {
 export const getCurrentUser = async (req: Request, res: Response) => {
     try {
         const user = await User.findById(req.user?.userId).select(
-            "fullName email"
+            "fullName email createdAt"
         );
 
         if (!user) {

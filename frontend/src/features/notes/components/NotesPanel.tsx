@@ -63,10 +63,12 @@ const NotesPanel = ({ notes, isLoading, tab, setTab, search, sort, setSort }: Pr
                             ))}
                         </div>
                         <div className="flex items-center gap-2">
-                            <SortMenu
-                                sort={sort}
-                                setSort={setSort}
-                            />
+                            <div className="max-md:hidden">
+                                <SortMenu
+                                    sort={sort}
+                                    setSort={setSort}
+                                />
+                            </div>
                             <Link
                                 to="/notes/new"
                                 className="group inline-flex shrink-0 items-center justify-center gap-1 sm:gap-2 rounded-full bg-accent border border-pink px-2.5 sm:px-5 py-1.75 md:py-3 text-xs sm:text-sm font-semibold text-card input-shadow transition hover:-translate-y-0.5">
@@ -76,7 +78,12 @@ const NotesPanel = ({ notes, isLoading, tab, setTab, search, sort, setSort }: Pr
                             </Link>
                         </div>
                     </TabsList>
-
+                    <div className="md:hidden">
+                        <SortMenu
+                            sort={sort}
+                            setSort={setSort}
+                        />
+                    </div>
                     {
                         headerTabs.map(tab => (
                             <TabsContent key={tab.value} value={tab.value} className="min-h-[50vh]">

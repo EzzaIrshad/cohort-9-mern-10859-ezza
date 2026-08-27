@@ -3,6 +3,17 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/features/notes/components/tiptap-ui-primitive/tooltip"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/shared/components/ui/alert-dialog"
 import type { Note } from "../types/notes.types";
 import { BsPinAngle as Pin, BsPinAngleFill as FilledPin, BsTrash3Fill as Trash } from "react-icons/bs";
 import { MdModeEdit as Pen } from "react-icons/md";
@@ -95,33 +106,31 @@ export const NoteCard = ({
                         </Tooltip>
 
                         {/* delete */}
-                        <Tooltip delay={200}>
-                            <TooltipTrigger
-                                onClick={() => {
-                                    toast("Confirm deletion", {
-                                        description: "This note will be permanently deleted.",
-                                        position: "bottom-right",
-                                        action: {
-                                            label: "Delete",
-                                            onClick: handleDelete,
-                                        },
-                                        cancel: {
-                                            label: "Cancel",
-                                            onClick: () => { },
-                                        },
-                                    })
-                                }}
-                                aria-label="Delete note"
-                                data-slot="Delete-Note"
-                                className="grid size-9 place-items-center rounded-[9px] cursor-pointer"
-                                style={{ background: tone.chip }}
-                            >
-                                <Trash className="size-4 text-white fill-white icon-shadow" />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                Delete
-                            </TooltipContent>
-                        </Tooltip>
+
+                        <AlertDialog>
+                            <AlertDialogTrigger
+                                render={<button
+                                    aria-label="Delete note"
+                                    data-slot="Delete-Note"
+                                    className="grid size-9 place-items-center rounded-[9px] cursor-pointer"
+                                    style={{ background: tone.chip }}
+                                >
+                                    <Trash className="size-4 text-white fill-white icon-shadow" />
+                                </button>}
+                            />
+                            <AlertDialogContent size="sm">
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>Confirm deletion?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This note will be permanently deleted.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction onClick={handleDelete} className="text-red-500! hover:bg-red-200!">Delete</AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                     </div>
                 </div>
 

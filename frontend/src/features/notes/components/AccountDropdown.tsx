@@ -17,7 +17,12 @@ import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useNavigate } from "react-router-dom";
 import type { DashboardTab } from "../layouts/DashboardLayout";
 
-const AccountDropdown = ({ setTab }: { setTab: (tab: DashboardTab) => void }) => {
+interface AccountDropdownProps {
+    setTab: (tab: DashboardTab) => void;
+    setShowProfile: (show: boolean) => void;
+}
+
+const AccountDropdown = ({ setTab, setShowProfile }: AccountDropdownProps) => {
     const navigate = useNavigate();
 
     const { theme, setTheme } = useTheme();
@@ -86,7 +91,7 @@ const AccountDropdown = ({ setTab }: { setTab: (tab: DashboardTab) => void }) =>
                 </div>
 
                 <DropdownMenuGroup>
-                    <DropdownMenuItem className="gap-3 hover:bg-primary/20! hover:rounded-[6px]">
+                    <DropdownMenuItem onClick={() => setShowProfile(true)} className="gap-3 hover:bg-primary/20! hover:rounded-[6px]">
                         <User aria-hidden="true" />
                         Profile
                     </DropdownMenuItem>
