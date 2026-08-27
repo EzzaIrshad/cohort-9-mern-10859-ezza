@@ -42,7 +42,7 @@ const TagInput = ({ value, onChange }: TagProps) => {
     return (
         <div className="w-full px-3">
 
-            <div className="flex flex-wrap items-center gap-2 p-2 rounded-xs bg-background input-shadow focus-within:border-ring border min-h-11">
+            <div className="flex flex-wrap items-center gap-2 p-2 rounded-xs bg-gradient-soft input-shadow focus-within:border-ring border min-h-11">
 
                 {value.map(tag => (
                     <span
