@@ -4,6 +4,7 @@ export interface IUser {
     fullName: string;
     email: string;
     password: string;
+    createdAt: Date;
 }
 
 const userSchema = new Schema<IUser>({
