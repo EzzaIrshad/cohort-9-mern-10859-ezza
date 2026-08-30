@@ -40,6 +40,18 @@ const NotesPanel = ({ notes, isLoading, tab, setTab, search, sort, setSort }: Pr
         }
     };
 
+    const renderEmptyState = () => {
+        if (search) {
+            return <EmptySearchState search={search} />;
+        }
+
+        if (tab === "pinned") {
+            return <EmptyPinnedState />;
+        }
+
+        return <EmptyState />;
+    };
+
     return (
         <div className="mx-auto flex w-full max-w-330 h-full gap-2 px-4 pb-3 sm:px-6 lg:px-8">
             <div className="py-4 md:py-6 w-full">
@@ -118,8 +130,7 @@ const NotesPanel = ({ notes, isLoading, tab, setTab, search, sort, setSort }: Pr
                                             }
                                         </div>
                                     ) : (
-                                        search ? <EmptySearchState search={search} /> :
-                                            tab.value === "pinned" ? <EmptyPinnedState /> : <EmptyState />
+                                        renderEmptyState()
                                     )
                                 )}
                             </TabsContent>
