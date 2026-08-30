@@ -67,6 +67,7 @@ const LoginPage: React.FC = () => {
                         type="email"
                         placeholder="Email"
                         autoComplete="email"
+                        aria-label="Email"
                         error={errors.email?.message}
                         {...register("email")}
                     />
@@ -78,6 +79,7 @@ const LoginPage: React.FC = () => {
                         type={showPassword ? "text" : "password"}
                         placeholder="Password"
                         autoComplete="current-password"
+                        aria-label="Password"
                         error={errors.password?.message}
                         {...register("password")}
                         trailing={
@@ -101,7 +103,7 @@ const LoginPage: React.FC = () => {
                         style={{ boxShadow: "-2px 7px 3px rgba(0, 0, 0, 0.1), rgba(9, 30, 66, 0.3) -2px 1px 3px 1px, inset -2px 2px 3px rgba(255, 255, 255, 0.3), inset 2px -2px 3px rgba(0, 0, 0, 0.2)" }}
                     >
                         <span>
-                            { loginMutation.isPending ? "Logging in..." : "Login" }
+                            {loginMutation.isPending ? "Logging in..." : "Login"}
                         </span>
                         <FiArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                     </button>
