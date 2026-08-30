@@ -15,16 +15,19 @@ describe("Notes Controller", () => {
     })
 
     const createMockResponse = () => {
+        const status = sinon.stub();
+        const json = sinon.stub();
+
         const res = {
-            status: sinon.stub(),
-            json: sinon.stub(),
+            status,
+            json,
         } as unknown as Response;
 
-        (res.status as sinon.SinonStub).returns(res);
-        (res.json as sinon.SinonStub).returns(res);
+        status.returns(res);
+        json.returns(res);
 
-        return res
-    }
+        return res;
+    };
 
     const userId = "user-123";
     const noteId = "note-123";

@@ -69,5 +69,6 @@ describe("validateObjectId Middleware", ()=>{
         middleware(req, res, next as unknown as NextFunction)
 
         expect(next.calledOnce).to.equal(true);
+        expect((res.status as sinon.SinonStub).notCalled).to.equal(true);
     })
 });

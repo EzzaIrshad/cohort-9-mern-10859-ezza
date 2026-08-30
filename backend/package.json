@@ -11,11 +11,11 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "test": "mocha --require tsx/esm \"tests/**/*.test.ts\"",
-    "test:watch": "mocha --require tsx/esm --watch \"tests/**/*.test.ts\"",
-    "test:coverage": "c8 npm test",
+    "test:coverage": "c8 --all --include=src/**/*.ts --exclude=src/server.ts --exclude=src/**/*.d.ts npm test",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "typecheck:test": "tsc -p tsconfig.test.json --noEmit"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
