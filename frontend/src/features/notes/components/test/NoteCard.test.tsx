@@ -1,9 +1,14 @@
-import type { ReactNode } from "react";
 import { jest } from "@jest/globals";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import type { Note } from "../../types/notes.types";
+import React, {
+    createContext,
+    useContext,
+    useState,
+    type ReactNode,
+} from "react";
 
 const mockNavigate = jest.fn();
 const mockUpdateMutate = jest.fn();
@@ -56,44 +61,96 @@ jest.unstable_mockModule(
     })
 );
 
+const AlertDialogContext = createContext<{
+    open: boolean;
+    setOpen: (open: boolean) => void;
+} | null>(null);
+
 jest.unstable_mockModule("@/shared/components/ui/alert-dialog", () => ({
-    AlertDialog: ({ children }: { children: ReactNode }) => (
-        <div>{children}</div>
-    ),
+    AlertDialog: ({ children }: { children: ReactNode }) => {
+        const [open, setOpen] = useState(false);
+
+        return (
+            <AlertDialogContext.Provider value={{ open, setOpen }}>
+                {children}
+            </AlertDialogContext.Provider>
+        );
+    },
+
     AlertDialogTrigger: ({
         children,
         render,
     }: {
         children?: ReactNode;
         render?: ReactNode;
-    }) => <>{render ?? children}</>,
-    AlertDialogContent: ({ children }: { children: ReactNode }) => (
-        <div role="alertdialog">{children}</div>
-    ),
-    AlertDialogDescription: ({ children }: { children: ReactNode }) => (
-        <p>{children}</p>
-    ),
-    AlertDialogFooter: ({ children }: { children: ReactNode }) => (
-        <div>{children}</div>
-    ),
+    }) => {
+        const context = useContext(AlertDialogContext);
+
+        const trigger = render ?? children;
+
+        if (!React.isValidElement(trigger)) {
+            return <>{trigger}</>;
+        }
+
+        return React.cloneElement(trigger as React.ReactElement<any>, {
+            onClick: () => context?.setOpen(true),
+        });
+    },
+
+    AlertDialogContent: ({ children }: { children: ReactNode }) => {
+        const context = useContext(AlertDialogContext);
+
+        return context?.open ? (
+            <div role="alertdialog">{children}</div>
+        ) : null;
+    },
+
     AlertDialogHeader: ({ children }: { children: ReactNode }) => (
         <div>{children}</div>
     ),
+
     AlertDialogTitle: ({ children }: { children: ReactNode }) => (
         <h2>{children}</h2>
     ),
-    AlertDialogCancel: ({ children }: { children: ReactNode }) => (
-        <button>{children}</button>
+
+    AlertDialogDescription: ({ children }: { children: ReactNode }) => (
+        <p>{children}</p>
     ),
+
+    AlertDialogFooter: ({ children }: { children: ReactNode }) => (
+        <div>{children}</div>
+    ),
+
+    AlertDialogCancel: ({ children }: { children: ReactNode }) => {
+        const context = useContext(AlertDialogContext);
+
+        return (
+            <button onClick={() => context?.setOpen(false)}>
+                {children}
+            </button>
+        );
+    },
+
     AlertDialogAction: ({
         children,
         onClick,
     }: {
         children: ReactNode;
         onClick?: () => void;
-    }) => (
-        <button onClick={onClick}>{children}</button>
-    ),
+    }) => {
+        const context = useContext(AlertDialogContext);
+
+        return (
+            <button
+                onClick={() => {
+                    onClick?.();
+                    context?.setOpen(false);
+                }}
+            >
+                {children}
+            </button>
+        );
+    },
 }));
 
 const { NoteCard } = await import("../NoteCard");

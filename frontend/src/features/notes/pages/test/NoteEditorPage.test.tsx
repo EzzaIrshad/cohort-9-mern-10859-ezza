@@ -2,12 +2,28 @@ import { jest } from "@jest/globals";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
+import type { NavigateFunction } from "react-router-dom";
+import type { useGetNote } from "../../hooks/useGetNote";
+import type { useUpdateNote } from "../../hooks/useUpdateNote";
+import type { CreateNoteInput } from "../../schemas/note.schema";
 
-const mockNavigate = jest.fn();
-const mockCreateMutate = jest.fn();
-const mockUpdateMutate = jest.fn();
+const mockNavigate = jest.fn<NavigateFunction>();
 
-let mockNote: unknown = undefined;
+type CreateNoteData = CreateNoteInput;
+
+type CreateMutationOptions = {
+    onSuccess?: () => void;
+    onError?: () => void;
+};
+
+const mockCreateMutate = jest.fn<
+    (data: CreateNoteData, options?: CreateMutationOptions) => void
+>();
+
+const mockUpdateMutate =
+    jest.fn<ReturnType<typeof useUpdateNote>["mutate"]>();
+
+let mockNote: ReturnType<typeof useGetNote>["data"] = undefined;
 let mockIsEdit = false;
 
 jest.unstable_mockModule("react-router-dom", () => ({
@@ -155,17 +171,7 @@ describe("NoteEditorPage", () => {
             expect(mockCreateMutate).toHaveBeenCalledTimes(1);
         });
 
-        const [data, options] = mockCreateMutate.mock.calls[0] as [
-            {
-                title: string;
-                content: string;
-                tags: string[];
-                isPinned: boolean;
-            },
-            {
-                onSuccess?: () => void;
-            }
-        ];
+        const [data, options] = mockCreateMutate.mock.calls[0];
 
         expect(data).toEqual({
             title: "My first note",
@@ -174,7 +180,7 @@ describe("NoteEditorPage", () => {
             isPinned: false,
         });
 
-        options.onSuccess?.();
+        options?.onSuccess?.();
 
         expect(mockNavigate).toHaveBeenCalledWith("/dashboard");
     });
@@ -183,12 +189,17 @@ describe("NoteEditorPage", () => {
         mockIsEdit = true;
 
         mockNote = {
+            success: true,
+            message: "Note fetched successfully",
             data: {
                 _id: "note-123",
                 title: "Existing note",
                 content: "Existing content",
+                userId: "user-1",
                 tags: ["work", "important"],
                 isPinned: true,
+                createdAt: "2026-01-01T00:00:00.000Z",
+                updatedAt: "2026-01-01T00:00:00.000Z",
             },
         };
 
@@ -217,12 +228,17 @@ describe("NoteEditorPage", () => {
         mockIsEdit = true;
 
         mockNote = {
+            success: true,
+            message: "Note fetched successfully",
             data: {
                 _id: "note-123",
                 title: "Existing note",
                 content: "Existing content",
+                userId: "user-1",
                 tags: [],
                 isPinned: false,
+                createdAt: "2026-01-01T00:00:00.000Z",
+                updatedAt: "2026-01-01T00:00:00.000Z",
             },
         };
 

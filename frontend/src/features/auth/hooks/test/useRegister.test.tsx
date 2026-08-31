@@ -21,7 +21,7 @@ const mockedRegister = jest.fn<
     ) => Promise<RegisterResponse>
 >();
 
-const mockedToastError = jest.fn();
+const mockedToastError = jest.fn<(message: string) => void>();
 
 jest.unstable_mockModule("../../api/auth.api", () => ({
     register: mockedRegister,

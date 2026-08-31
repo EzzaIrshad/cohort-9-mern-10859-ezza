@@ -1,10 +1,28 @@
 import { jest } from "@jest/globals";
 import { render, screen, waitFor } from "@testing-library/react";
+import type { ComponentProps } from "react";
+import type { DashboardTab } from "../../layouts/DashboardLayout";
+import type { useGetNotes } from "../../hooks/useGetNotes";
+import type NotesPanel from "../../components/NotesPanel";
 import { MemoryRouter } from "react-router-dom";
 
-const mockUseGetNotes = jest.fn();
-const mockUseOutletContext = jest.fn();
-const mockNotesPanel = jest.fn();
+type DashboardContext = {
+    search: string;
+    tab: DashboardTab;
+    setTab: (tab: DashboardTab) => void;
+};
+
+type NotesQueryParams = Parameters<typeof useGetNotes>[0];
+type NotesQueryResult = ReturnType<typeof useGetNotes>;
+type NotesPanelProps = ComponentProps<typeof NotesPanel>;
+
+const mockUseGetNotes = jest.fn<
+    (params?: NotesQueryParams) => NotesQueryResult
+>();
+
+const mockUseOutletContext = jest.fn<() => DashboardContext>();
+
+const mockNotesPanel = jest.fn<(props: NotesPanelProps) => void>();
 
 jest.unstable_mockModule("react-router-dom", () => {
     const actual = jest.requireActual<typeof import("react-router-dom")>(
@@ -22,23 +40,15 @@ jest.unstable_mockModule("../../hooks/useGetNotes", () => ({
 }));
 
 jest.unstable_mockModule("../../components/NotesPanel", () => ({
-    default: (props: {
-        notes: unknown[];
-        isLoading: boolean;
-        tab: string;
-        setTab: (tab: string) => void;
-        search: string;
-        sort: string;
-        setSort: (sort: string) => void;
-    }) => {
+    default: (props: NotesPanelProps) => {
         mockNotesPanel(props);
 
         return (
             <div data-testid="notes-panel">
                 Notes Panel
             </div>
-        );
-    },
+        )
+    }
 }));
 
 const { default: DashboardPage } = await import("../DashboardPage");
@@ -57,19 +67,33 @@ describe("DashboardPage", () => {
 
         mockUseGetNotes.mockReturnValue({
             data: {
+                success: true,
+                message: "Notes fetched successfully",
                 data: [
                     {
                         _id: "1",
                         title: "First Note",
+                        content: "",
+                        userId: "user-1",
+                        isPinned: false,
+                        tags: [],
+                        createdAt: "",
+                        updatedAt: "",
                     },
                     {
                         _id: "2",
                         title: "Second Note",
+                        content: "",
+                        userId: "user-1",
+                        isPinned: false,
+                        tags: [],
+                        createdAt: "",
+                        updatedAt: "",
                     },
                 ],
             },
             isLoading: false,
-        });
+        } as unknown as NotesQueryResult);
     });
 
     const renderDashboard = () => {
@@ -135,19 +159,33 @@ describe("DashboardPage", () => {
             {
                 _id: "1",
                 title: "First Note",
+                content: "First note content",
+                userId: "user-1",
+                isPinned: false,
+                tags: [],
+                createdAt: "2026-01-01T00:00:00.000Z",
+                updatedAt: "2026-01-01T00:00:00.000Z",
             },
             {
                 _id: "2",
                 title: "Second Note",
+                content: "Second note content",
+                userId: "user-1",
+                isPinned: false,
+                tags: [],
+                createdAt: "2026-01-02T00:00:00.000Z",
+                updatedAt: "2026-01-02T00:00:00.000Z",
             },
         ];
 
         mockUseGetNotes.mockReturnValue({
             data: {
+                success: true,
+                message: "Notes fetched successfully",
                 data: notes,
             },
             isLoading: false,
-        });
+        } as unknown as NotesQueryResult);
 
         renderDashboard();
 
@@ -168,7 +206,7 @@ describe("DashboardPage", () => {
         mockUseGetNotes.mockReturnValue({
             data: undefined,
             isLoading: true,
-        });
+        } as unknown as NotesQueryResult);
 
         renderDashboard();
 
@@ -197,7 +235,7 @@ describe("DashboardPage", () => {
         mockUseGetNotes.mockReturnValue({
             data: undefined,
             isLoading: false,
-        });
+        } as unknown as NotesQueryResult);
 
         renderDashboard();
 
@@ -212,12 +250,7 @@ describe("DashboardPage", () => {
     it("should update the sort value when setSort is called", async () => {
         renderDashboard();
 
-        const firstCallProps = mockNotesPanel.mock
-            .calls[0][0] as {
-                setSort: (
-                    sort: "createdAt" | "updatedAt"
-                ) => void;
-            };
+        const firstCallProps = mockNotesPanel.mock.calls[0][0];
 
         firstCallProps.setSort("updatedAt");
 

@@ -87,6 +87,10 @@ describe("TagInput", () => {
 
         renderTagInput([], onChange);
 
+        const input = screen.getByRole("textbox", {
+            name: "Add a Tag",
+        });
+        await user.click(input);
         await user.keyboard("{Enter}");
 
         expect(onChange).not.toHaveBeenCalled();

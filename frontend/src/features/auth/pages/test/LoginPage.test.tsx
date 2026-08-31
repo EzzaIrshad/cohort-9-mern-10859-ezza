@@ -4,9 +4,6 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { loginSchema } from "../../schemas/auth.schema";
 
-const mockNavigate = jest.fn();
-const mockMutate = jest.fn();
-
 type LoginMutationPayload = {
     email: string;
     password: string;
@@ -18,6 +15,12 @@ type LoginMutationOptions = {
 };
 
 type LoginMutationCall = [LoginMutationPayload, LoginMutationOptions];
+
+const mockNavigate = jest.fn<(to: string, options?: { replace?: boolean }) => void>();
+const mockMutate = jest.fn<
+    (payload: LoginMutationPayload, options: LoginMutationOptions) => void
+>();
+
 
 const getLastLoginMutationCall = (): LoginMutationCall => {
     const call = mockMutate.mock.calls[0];

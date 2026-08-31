@@ -4,13 +4,8 @@ import {
     QueryClientProvider,
 } from "@tanstack/react-query";
 import { renderHook, waitFor } from "@testing-library/react";
+import type { NotesQueryParams } from "../../types/notes.types";
 import type { ReactNode } from "react";
-
-type NotesQueryParams = {
-    search?: string;
-    sort?: "createdAt" | "updatedAt";
-    pinned?: boolean;
-};
 
 type NotesResponse = {
     success: boolean;
@@ -52,7 +47,7 @@ describe("useGetNotes", () => {
         const params: NotesQueryParams = {
             search: "test",
             sort: "updatedAt",
-            pinned: true,
+            isPinned: true,
         };
 
         const response: NotesResponse = {

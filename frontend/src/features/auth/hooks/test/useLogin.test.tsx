@@ -17,7 +17,7 @@ const mockedLogin = jest.fn<
     ) => Promise<LoginResponse>
 >();
 
-const mockedToastError = jest.fn();
+const mockedToastError = jest.fn<(message: string) => void>();
 
 jest.unstable_mockModule("../../api/auth.api", () => ({
     login: mockedLogin,

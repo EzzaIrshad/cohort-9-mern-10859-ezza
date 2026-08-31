@@ -3,9 +3,6 @@ import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 
-const mockNavigate = jest.fn();
-const mockMutate = jest.fn();
-
 type RegisterMutationPayload = {
     fullName: string;
     email: string;
@@ -21,6 +18,11 @@ type RegisterMutationCall = [
     RegisterMutationPayload,
     RegisterMutationOptions
 ];
+
+const mockNavigate = jest.fn<(to: string, options?: { replace?: boolean }) => void>();
+const mockMutate = jest.fn<
+    (payload: RegisterMutationPayload, options: RegisterMutationOptions) => void
+>();
 
 const getLastRegisterMutationCall = (): RegisterMutationCall => {
     const call = mockMutate.mock.calls[0];
