@@ -74,6 +74,7 @@ const RegisterPage: React.FC = () => {
                         type="text"
                         placeholder="Full Name"
                         autoComplete="name"
+                        aria-label="Full Name"
                         error={errors.fullName?.message}
                     />
 
@@ -86,6 +87,7 @@ const RegisterPage: React.FC = () => {
                         type="email"
                         placeholder="Email"
                         autoComplete="email"
+                        aria-label="Email"
                         error={errors.email?.message}
                     />
 
@@ -98,6 +100,7 @@ const RegisterPage: React.FC = () => {
                         type={showPassword ? "text" : "password"}
                         placeholder="Password"
                         autoComplete="new-password"
+                        aria-label="Password"
                         error={errors.password?.message}
                         trailing={
                             <button

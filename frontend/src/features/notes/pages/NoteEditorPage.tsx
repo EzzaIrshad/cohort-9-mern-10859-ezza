@@ -163,7 +163,7 @@ const NoteEditorPage = () => {
     )
 }
 
-function ErrorMessage({ id, error }: { id: string; error: string | undefined }) {
+function ErrorMessage({ id, error }: Readonly<{ id: string; error: string | undefined }>) {
     return (
         <div className="flex items-center gap-2 mt-1.5 text-destructive">
             <MdError size={16} />
