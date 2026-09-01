@@ -20,6 +20,8 @@ const config: Config = {
 
     moduleNameMapper: {
         "^@/(.*)$": "<rootDir>/src/$1",
+        "\\.(svg|png|jpg|jpeg|gif|webp)$": "<rootDir>/src/test/fileMock.ts",
+        "\\.(css|scss|sass)$": "<rootDir>/src/test/styleMock.ts",
     },
 
     testMatch: [

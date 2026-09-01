@@ -71,93 +71,107 @@ export function useMenuNavigation<T>({
   )
 
   useEffect(() => {
-    const handleKeyboardNavigation = (event: KeyboardEvent) => {
-      if (!items.length) return false
+    const moveNext = () => {
+      setSelectedIndex((currentIndex) => {
+        if (currentIndex === -1) return 0;
+        return (currentIndex + 1) % items.length;
+      });
+    };
 
-      const moveNext = () =>
-        setSelectedIndex((currentIndex) => {
-          if (currentIndex === -1) return 0
-          return (currentIndex + 1) % items.length
-        })
+    const movePrev = () => {
+      setSelectedIndex((currentIndex) => {
+        if (currentIndex === -1) return items.length - 1;
+        return (currentIndex - 1 + items.length) % items.length;
+      });
+    };
 
-      const movePrev = () =>
-        setSelectedIndex((currentIndex) => {
-          if (currentIndex === -1) return items.length - 1
-          return (currentIndex - 1 + items.length) % items.length
-        })
+    const handleArrowNavigation = (
+      event: KeyboardEvent,
+      direction: "next" | "prev",
+      requiredOrientation: "horizontal" | "vertical",
+    ): boolean => {
+      if (orientation !== requiredOrientation) return false;
+
+      event.preventDefault();
+
+      if (direction === "next") {
+        moveNext();
+      } else {
+        movePrev();
+      }
+
+      return true;
+    };
+
+    const handleTabNavigation = (event: KeyboardEvent): boolean => {
+      if (!loopOnTab) return false;
+
+      event.preventDefault();
+
+      if (event.shiftKey) {
+        movePrev();
+      } else {
+        moveNext();
+      }
+
+      return true;
+    };
+
+    const handleEnterNavigation = (event: KeyboardEvent): boolean => {
+      if (event.isComposing) return false;
+
+      event.preventDefault();
+
+      if (selectedIndex !== -1 && items[selectedIndex]) {
+        onSelect?.(items[selectedIndex]);
+      }
+
+      return true;
+    };
+
+    const handleKeyboardNavigation = (event: KeyboardEvent): boolean => {
+      if (!items.length) return false;
 
       switch (event.key) {
-        case "ArrowUp": {
-          if (orientation === "horizontal") return false
-          event.preventDefault()
-          movePrev()
-          return true
-        }
+        case "ArrowUp":
+          return handleArrowNavigation(event, "prev", "vertical");
 
-        case "ArrowDown": {
-          if (orientation === "horizontal") return false
-          event.preventDefault()
-          moveNext()
-          return true
-        }
+        case "ArrowDown":
+          return handleArrowNavigation(event, "next", "vertical");
 
-        case "ArrowLeft": {
-          if (orientation === "vertical") return false
-          event.preventDefault()
-          movePrev()
-          return true
-        }
+        case "ArrowLeft":
+          return handleArrowNavigation(event, "prev", "horizontal");
 
-        case "ArrowRight": {
-          if (orientation === "vertical") return false
-          event.preventDefault()
-          moveNext()
-          return true
-        }
+        case "ArrowRight":
+          return handleArrowNavigation(event, "next", "horizontal");
 
-        case "Tab": {
-          if (!loopOnTab) return false
-          event.preventDefault()
-          if (event.shiftKey) {
-            movePrev()
-          } else {
-            moveNext()
-          }
-          return true
-        }
+        case "Tab":
+          return handleTabNavigation(event);
 
-        case "Home": {
-          event.preventDefault()
-          setSelectedIndex(0)
-          return true
-        }
+        case "Home":
+          event.preventDefault();
+          setSelectedIndex(0);
+          return true;
 
-        case "End": {
-          event.preventDefault()
-          setSelectedIndex(items.length - 1)
-          return true
-        }
+        case "End":
+          event.preventDefault();
+          setSelectedIndex(items.length - 1);
+          return true;
 
-        case "Enter": {
-          if (event.isComposing) return false
-          event.preventDefault()
-          if (selectedIndex !== -1 && items[selectedIndex]) {
-            onSelect?.(items[selectedIndex])
-          }
-          return true
-        }
+        case "Enter":
+          return handleEnterNavigation(event);
 
-        case "Escape": {
-          if (!onClose) return false
-          event.preventDefault()
-          onClose?.()
-          return true
-        }
+        case "Escape":
+          if (!onClose) return false;
+
+          event.preventDefault();
+          onClose();
+          return true;
 
         default:
-          return false
+          return false;
       }
-    }
+    };
 
     let targetElement: HTMLElement | null = null
 

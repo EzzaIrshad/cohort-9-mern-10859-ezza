@@ -10,6 +10,7 @@ const ThemeToggle = () => {
     }
     return (
         <button
+            type="button"
             onClick={handleToggle}
             aria-label="Toggle theme"
             className="group relative size-8 sm:size-10 rounded-full glass flex items-center justify-center overflow-hidden transition-transform 

@@ -27,7 +27,7 @@ export function EmptyState() {
     );
 }
 
-export function EmptySearchState({ search }: { search: string }) {
+export function EmptySearchState({ search }: { readonly search: string }) {
     return (
         <div className="flex min-h-[40vh] flex-col items-center justify-center text-center">
             <h3 className="font-nunito text-xl font-bold">

@@ -84,13 +84,13 @@ const AccountDropdown = ({ setTab }: AccountDropdownProps) => {
                     <div className="py-2.5">
                         <Tabs value={theme} onValueChange={setTheme}>
                             <TabsList className="w-full bg-background dark:bg-muted border">
-                                <TabsTrigger value="light" className="h-6 flex-1 data-active:bg-[#fff7f6] data-active:shadow-[-2px_2px_2px_rgba(9,30,66,0.13)]">
+                                <TabsTrigger value="light" aria-label="Light theme" className="h-6 flex-1 data-active:bg-[#fff7f6] data-active:shadow-[-2px_2px_2px_rgba(9,30,66,0.13)]">
                                     <Sun className="size-4" aria-hidden="true" />
                                 </TabsTrigger>
-                                <TabsTrigger value="dark" className="h-6 flex-1 data-active:bg-[#fff7f6] data-active:shadow-[-2px_2px_2px_rgba(9,30,66,0.13)]">
+                                <TabsTrigger value="dark" aria-label="Dark theme" className="h-6 flex-1 data-active:bg-[#fff7f6] data-active:shadow-[-2px_2px_2px_rgba(9,30,66,0.13)]">
                                     <Moon className="size-4" aria-hidden="true" />
                                 </TabsTrigger>
-                                <TabsTrigger value="system" className="h-6 flex-1 data-active:bg-[#fff7f6] data-active:shadow-[-2px_2px_2px_rgba(9,30,66,0.13)]">
+                                <TabsTrigger value="system" aria-label="System theme" className="h-6 flex-1 data-active:bg-[#fff7f6] data-active:shadow-[-2px_2px_2px_rgba(9,30,66,0.13)]">
                                     <MonitorIcon className="size-4" aria-hidden="true" />
                                 </TabsTrigger>
                             </TabsList>

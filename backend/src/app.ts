@@ -10,6 +10,7 @@ import noteRoute from './routes/notes.route.js'
 import { env } from './config/env.js';
 
 const app = express();
+app.disable("x-powered-by");
 
 app.use(helmet());
 

@@ -247,7 +247,7 @@ export function findNodePosition(props: {
 }): { pos: number; node: PMNode } | null {
   const { editor, node, nodePos } = props
 
-  if (!editor || !editor.state?.doc) return null
+  if (!editor?.state?.doc) return null
 
   // Zero is valid position
   const hasValidNode = node !== undefined && node !== null
@@ -263,7 +263,6 @@ export function findNodePosition(props: {
     let foundNode: PMNode | null = null
 
     editor.state.doc.descendants((currentNode, pos) => {
-      // TODO: Needed?
       // if (currentNode.type && currentNode.type.name === node!.type.name) {
       if (currentNode === node) {
         foundPos = pos
@@ -301,7 +300,7 @@ export function isNodeTypeSelected(
   nodeTypeNames: string[] = [],
   checkAncestorNodes: boolean = false
 ): boolean {
-  if (!editor || !editor.state.selection) return false
+  if (!editor?.state?.selection) return false
 
   const { selection } = editor.state
   if (selection.empty) return false
@@ -452,15 +451,14 @@ export function isAllowedUri(
 
   if (!uri) return true
 
-  return (
-    uri.replace(ATTR_WHITESPACE, "").match(
-      new RegExp(
-        // eslint-disable-next-line no-useless-escape
-        `^(?:(?:${allowedProtocols.join("|")}):|[^a-z]|[a-z0-9+.\-]+(?:[^a-z+.\-:]|$))`,
-        "i"
-      )
-    ) !== null
+  const normalizedUri = uri.replace(ATTR_WHITESPACE, "")
+  const pattern = new RegExp(
+    // eslint-disable-next-line no-useless-escape
+    `^(?:(?:${allowedProtocols.join("|")}):|[^a-z]|[a-z0-9+.\-]+(?:[^a-z+.\-:]|$))`,
+    "i"
   )
+
+  return pattern.exec(normalizedUri) !== null
 }
 
 export function sanitizeUrl(

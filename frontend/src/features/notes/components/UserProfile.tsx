@@ -141,6 +141,8 @@ const UserProfile = ({ onOpenChange }: { onOpenChange: (open: boolean) => void }
             {/* Actions */}
             <div className="w-full mt-4 flex flex-col-reverse gap-3 justify-between sm:flex-row ">
                 <button
+                    type="button"
+                    aria-label="Cancel profile"
                     onClick={() => onOpenChange(false)}
                     className="w-full px-4 py-2 rounded-[5px] text-foreground bg-background/60 border border-gray-300 hover:bg-secondary sm:w-auto cursor-pointer"
                 >
@@ -152,12 +154,12 @@ const UserProfile = ({ onOpenChange }: { onOpenChange: (open: boolean) => void }
                     onOpenChange={setLogoutOpen}>
                     <AlertDialogTrigger
                         render={<button
+                            type="button"
                             className="w-full gap-2 flex justify-center py-2 px-4 rounded-[5px] border border-[oklch(0.9_0.1_25)] bg-[oklch(0.92_0.06_25)] text-foreground hover:bg-[oklch(0.92_0.12_25)] dark:bg-[oklch(0.3_0.06_25)] dark:text-foreground dark:hover:bg-[oklch(0.35_0.07_25)] sm:w-auto cursor-pointer transition-colors"
                         >
                             <span className="grid h-6 w-6 place-items-center rounded-full bg-[oklch(0.9_0.2_25)]">
                                 <LogOut className="h-3.5 w-3.5 text-foreground/90" strokeWidth={2.5} />
-                            </span>
-                            Log out
+                            </span> Log out
                         </button>}
                     />
                     <div className={`abolute inset-0 rounded-xl bg-black/5 backdrop-blur-[2px] ${logoutOpen ? "fixed h-screen" : "hidden h-0"}`} />

@@ -22,6 +22,23 @@ import { useUpdateNote } from "../hooks/useUpdateNote";
 import { useDeleteNote } from "../hooks/useDeleteNote";
 import { toast } from "sonner";
 
+const htmlToText = (html: string) => {
+    const el = document.createElement("div");
+    el.innerHTML = html;
+
+    el.querySelectorAll("br").forEach((br) => {
+        br.replaceWith("\n");
+    });
+
+    el.querySelectorAll("p, div, li, h1, h2, h3, h4, h5, h6").forEach((node) => {
+        node.after("\n")
+    });
+
+    return el.textContent
+        ?.replace(/\n{2,}/g, "\n")
+        .trim() || "";
+};
+
 interface ToneItem {
     bg: string;
     pinColor: string;
@@ -110,6 +127,7 @@ export const NoteCard = ({
                         <AlertDialog>
                             <AlertDialogTrigger
                                 render={<button
+                                    type="button"
                                     aria-label="Delete note"
                                     data-slot="Delete-Note"
                                     className="grid size-9 place-items-center rounded-[9px] cursor-pointer"
@@ -140,9 +158,7 @@ export const NoteCard = ({
                         {noteData.title}
                     </h3>
                     <p className="mt-2 line-clamp-3 whitespace-pre-line text-sm leading-relaxed text-foreground/70">
-                        {noteData.content
-                            .replace(/<br\s*\/?>|<\/(?:p|div|li)\s*>/gi, "\n")
-                            .replace(/<[^>]+>/g, " ")}
+                        {htmlToText(noteData.content)}
                     </p>
                 </div>
             </div>

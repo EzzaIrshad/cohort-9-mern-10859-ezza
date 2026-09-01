@@ -3,7 +3,7 @@ import { createNote, deleteNote, getAllNotes, getNote, updateNote } from "../con
 import { protect } from "../middleware/auth.middleware.js";
 import { validateObjectId } from "../middleware/validateObjectId.js";
 
-const router = express();
+const router = express.Router();
 
 router.get("/get-all-notes", protect, getAllNotes);
 router.get("/get-note/:id", protect, validateObjectId("id"), getNote);

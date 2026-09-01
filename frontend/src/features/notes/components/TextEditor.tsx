@@ -12,7 +12,7 @@ interface TextEditorProps {
     onChange?: (html: string) => void
 }
 
-export default function TextEditor({ value, onChange }: TextEditorProps) {
+export default function TextEditor({ value, onChange }: Readonly<TextEditorProps>) {
     const editor = useEditor({
         extensions: [StarterKit, Superscript, Subscript, TextAlign.configure({ types: ['heading', 'paragraph'] }), Highlight.configure({ multicolor: true })],
         content: value || "",

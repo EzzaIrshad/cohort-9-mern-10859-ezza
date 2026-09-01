@@ -1,4 +1,4 @@
-import logo from "/src/assets/logo-color.png";
+import logo from "../../assets/logo-color.png";
 
 export default function NotikLogo() {
     return (

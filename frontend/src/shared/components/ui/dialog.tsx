@@ -8,26 +8,26 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/features/notes/components/tiptap-ui-primitive/button"
 // import { Button } from "@/components/ui/button"
 
-function Dialog({ ...props }: DialogPrimitive.Root.Props) {
+function Dialog({ ...props }: Readonly<DialogPrimitive.Root.Props>) {
     return <DialogPrimitive.Root data-slot="dialog" {...props} />
 }
 
-function DialogTrigger({ ...props }: DialogPrimitive.Trigger.Props) {
+function DialogTrigger({ ...props }: Readonly<DialogPrimitive.Trigger.Props>) {
     return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />
 }
 
-function DialogPortal({ ...props }: DialogPrimitive.Portal.Props) {
+function DialogPortal({ ...props }: Readonly<DialogPrimitive.Portal.Props>) {
     return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />
 }
 
-function DialogClose({ ...props }: DialogPrimitive.Close.Props) {
+function DialogClose({ ...props }: Readonly<DialogPrimitive.Close.Props>) {
     return <DialogPrimitive.Close data-slot="dialog-close" {...props} />
 }
 
 function DialogOverlay({
     className,
     ...props
-}: DialogPrimitive.Backdrop.Props) {
+}: Readonly<DialogPrimitive.Backdrop.Props>) {
     return (
         <DialogPrimitive.Backdrop
             data-slot="dialog-overlay"
@@ -97,13 +97,13 @@ function DialogFooter({
         >
             {children}
             {showCloseButton && (
-                <DialogPrimitive.Close render={<button>Close</button>} />
+                <DialogPrimitive.Close render={<button type="button">Close</button>} />
             )}
         </div>
     )
 }
 
-function DialogTitle({ className, ...props }: DialogPrimitive.Title.Props) {
+function DialogTitle({ className, ...props }: Readonly<DialogPrimitive.Title.Props>) {
     return (
         <DialogPrimitive.Title
             data-slot="dialog-title"
@@ -119,7 +119,7 @@ function DialogTitle({ className, ...props }: DialogPrimitive.Title.Props) {
 function DialogDescription({
     className,
     ...props
-}: DialogPrimitive.Description.Props) {
+}: Readonly<DialogPrimitive.Description.Props>) {
     return (
         <DialogPrimitive.Description
             data-slot="dialog-description"
