@@ -90,7 +90,12 @@ export function useMenuNavigation<T>({
       direction: "next" | "prev",
       requiredOrientation: "horizontal" | "vertical",
     ): boolean => {
-      if (orientation !== requiredOrientation) return false;
+      if (
+        orientation !== requiredOrientation &&
+        orientation !== "both"
+      ) {
+        return false;
+      }
 
       event.preventDefault();
 

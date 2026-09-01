@@ -1,6 +1,7 @@
 import { jest } from "@jest/globals";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import React from "react";
 import { MemoryRouter } from "react-router-dom";
 
 type MockUser = {
@@ -69,41 +70,80 @@ jest.unstable_mockModule("react-router-dom", async () => {
 
 jest.unstable_mockModule("@/shared/components/ui/alert-dialog", () => {
 
+    const AlertDialogContext = React.createContext<{
+        open: boolean;
+        onOpenChange: (open: boolean) => void;
+    } | null>(null);
+
     const AlertDialog = ({
         children,
-        open,
-        onOpenChange,
+        open = false,
+        onOpenChange = () => { },
     }: {
         children: React.ReactNode;
         open?: boolean;
         onOpenChange?: (open: boolean) => void;
     }) => {
         return (
-            <div
-                data-testid="alert-dialog"
-                data-open={open}
-                onClick={() => onOpenChange?.(false)}
-            >
-                {children}
-            </div>
+            <AlertDialogContext.Provider value={{ open, onOpenChange }}>
+                <div data-testid="alert-dialog" data-open={open}>
+                    {children}
+                </div>
+            </AlertDialogContext.Provider>
         );
     };
 
     const AlertDialogTrigger = ({
         render,
     }: {
-        render: React.ReactElement;
-    }) => render;
+        render: React.ReactElement<
+            React.ButtonHTMLAttributes<HTMLButtonElement>
+        >;
+    }) => {
+        const context = React.useContext(AlertDialogContext);
+
+        return React.cloneElement(render, {
+            onClick: (event) => {
+                render.props.onClick?.(event);
+                context?.onOpenChange(true);
+            },
+        });
+    };
 
     const AlertDialogContent = ({
         children,
     }: {
         children: React.ReactNode;
-    }) => (
-        <div data-testid="alert-dialog-content">
-            {children}
-        </div>
-    );
+    }) => {
+        const context = React.useContext(AlertDialogContext);
+
+        if (!context?.open) {
+            return null;
+        }
+
+        return (
+            <div data-testid="alert-dialog-content">
+                {children}
+            </div>
+        );
+    };
+
+    const AlertDialogCancel = ({
+        children,
+    }: {
+        children: React.ReactNode;
+    }) => {
+        const context = React.useContext(AlertDialogContext);
+
+        return (
+            <button
+                type="button"
+                onClick={() => context?.onOpenChange(false)}
+            >
+                {children}
+            </button>
+        );
+    };
 
     const AlertDialogHeader = ({
         children,
@@ -129,27 +169,22 @@ jest.unstable_mockModule("@/shared/components/ui/alert-dialog", () => {
         children: React.ReactNode;
     }) => <p>{children}</p>;
 
-    const AlertDialogCancel = ({
-        children,
-        ...props
-    }: {
-        children: React.ReactNode;
-        className?: string;
-    }) => <button {...props}>{children}</button>;
-
     const AlertDialogAction = ({
         children,
         onClick,
-        ...props
     }: {
         children: React.ReactNode;
         onClick?: () => void;
-        className?: string;
-    }) => (
-        <button onClick={onClick} {...props}>
-            {children}
-        </button>
-    );
+    }) => {
+        return (
+            <button
+                type="button"
+                onClick={onClick}
+            >
+                {children}
+            </button>
+        );
+    };
 
     return {
         AlertDialog,
@@ -335,11 +370,13 @@ describe("UserProfile", () => {
             })
         );
 
-        expect(
-            screen.getByRole("heading", {
-                name: "Log out of Notik?",
-            })
-        ).toBeInTheDocument();
+        await waitFor(() => {
+            expect(
+                screen.queryByRole("heading", {
+                    name: "Log out of Notik?",
+                })
+            ).not.toBeInTheDocument();
+        });
     });
 
     it("should call logout mutation when logout is confirmed", async () => {
